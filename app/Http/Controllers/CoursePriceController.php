@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Models\Course;
+use App\Models\CoursePrice;
 use Illuminate\Http\Request;
 
-final class CourseController extends Controller
+final class CoursePriceController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -36,7 +36,7 @@ final class CourseController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Course $course): void
+    public function show(CoursePrice $coursePrice): void
     {
         //
     }
@@ -44,7 +44,7 @@ final class CourseController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Course $course): void
+    public function edit(CoursePrice $coursePrice): void
     {
         //
     }
@@ -52,7 +52,7 @@ final class CourseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Course $course): void
+    public function update(Request $request, CoursePrice $coursePrice): void
     {
         //
     }
@@ -60,7 +60,7 @@ final class CourseController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Course $course): void
+    public function destroy(CoursePrice $coursePrice): void
     {
         //
     }
