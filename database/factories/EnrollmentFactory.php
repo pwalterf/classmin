@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Enums\EnrollmentStatus;
+use App\Enums\EnrollmentStatuses;
 use App\Models\Course;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -22,7 +22,7 @@ final class EnrollmentFactory extends Factory
     public function definition(): array
     {
         return [
-            'status' => $this->faker->randomElement(EnrollmentStatus::getStatuses()),
+            'status' => $this->faker->randomElement(EnrollmentStatuses::getStatuses()),
             'enrolled_at' => $this->faker->date(),
             'credits' => $this->faker->numberBetween(1, 10),
             'discount_pct' => $this->faker->optional()->numberBetween(0, 50),

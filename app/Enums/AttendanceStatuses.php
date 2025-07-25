@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-enum EnrollmentStatus: string
+enum AttendanceStatuses: string
 {
-    case Active = 'active';
-    case Inactive = 'inactive';
-    case Dropped = 'dropped';
-    case Completed = 'completed';
+    case Present = 'present';
+    case Absent = 'absent';
+    case Late = 'late';
+    case Excused = 'excused';
 
     /**
      * Get all statuses as an array.
@@ -29,10 +29,10 @@ enum EnrollmentStatus: string
     public static function getLabels(): array
     {
         return [
-            self::Active->value => 'Activo',
-            self::Inactive->value => 'Inactivo',
-            self::Dropped->value => 'Abandonado',
-            self::Completed->value => 'Completado',
+            self::Present->value => 'Presente',
+            self::Absent->value => 'Ausente',
+            self::Late->value => 'Tarde',
+            self::Excused->value => 'Justificado',
         ];
     }
 }
