@@ -32,4 +32,14 @@ final class Course extends Model
     {
         return $this->hasMany(Enrollment::class);
     }
+
+    /**
+     * Get the lessons for the course.
+     *
+     * @return HasMany<Lesson, $this>
+     */
+    public function lessons(): HasMany
+    {
+        return $this->hasMany(Lesson::class);
+    }
 }
