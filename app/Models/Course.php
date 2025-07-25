@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 final class Course extends Model
 {
@@ -15,10 +16,20 @@ final class Course extends Model
     /**
      * Get the prices for the course.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<CoursePrice, $this>
+     * @return HasMany<CoursePrice, $this>
      */
-    public function prices()
+    public function prices(): HasMany
     {
         return $this->hasMany(CoursePrice::class);
+    }
+
+    /**
+     * Get the enrollments for the course.
+     *
+     * @return HasMany<Enrollment, $this>
+     */
+    public function enrollments(): HasMany
+    {
+        return $this->hasMany(Enrollment::class);
     }
 }

@@ -8,13 +8,23 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-final class CoursePrice extends Model
+final class Enrollment extends Model
 {
-    /** @use HasFactory<\Database\Factories\CoursePriceFactory> */
+    /** @use HasFactory<\Database\Factories\EnrollmentFactory> */
     use HasFactory;
 
     /**
-     * Get the course that owns the price.
+     * Get the user associated with the enrollment.
+     *
+     * @return BelongsTo<User, $this>
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the course associated with the enrollment.
      *
      * @return BelongsTo<Course, $this>
      */
