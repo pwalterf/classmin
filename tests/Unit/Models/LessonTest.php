@@ -18,3 +18,15 @@ test('to array', function () {
         'updated_at',
     ]);
 });
+
+test('belongs to course', function () {
+    $lesson = Lesson::factory()->create()->refresh();
+
+    expect($lesson->course)->toBeInstanceOf(App\Models\Course::class);
+});
+
+test('has many attendances', function () {
+    $lesson = Lesson::factory()->hasAttendances(3)->create();
+
+    expect($lesson->attendances)->toHaveCount(3);
+});

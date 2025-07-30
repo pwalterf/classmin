@@ -14,3 +14,9 @@ test('to array', function () {
         'updated_at',
     ]);
 });
+
+test('has many enrollments', function () {
+    $user = App\Models\User::factory()->hasEnrollments(3)->create();
+
+    expect($user->enrollments)->toHaveCount(3);
+});
