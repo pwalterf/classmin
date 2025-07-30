@@ -13,8 +13,8 @@ test('to array', function () {
         'currency',
         'started_at',
         'ended_at',
+        'course_id',
         'created_at',
         'updated_at',
-        'course_id',
     ]);
 });

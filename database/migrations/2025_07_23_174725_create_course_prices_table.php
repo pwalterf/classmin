@@ -19,8 +19,8 @@ return new class extends Migration
             $table->char('currency', 3);
             $table->date('started_at');
             $table->date('ended_at')->nullable();
-            $table->timestamps();
             $table->foreignId('course_id')->constrained();
+            $table->timestamps();
         });
     }
 };

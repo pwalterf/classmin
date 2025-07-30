@@ -33,4 +33,16 @@ final class Lesson extends Model
     {
         return $this->hasMany(Attendance::class);
     }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'taught_at' => 'date',
+        ];
+    }
 }

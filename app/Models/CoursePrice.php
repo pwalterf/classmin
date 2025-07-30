@@ -22,4 +22,17 @@ final class CoursePrice extends Model
     {
         return $this->belongsTo(Course::class);
     }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'started_at' => 'date',
+            'ended_at' => 'date',
+        ];
+    }
 }

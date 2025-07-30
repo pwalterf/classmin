@@ -33,4 +33,16 @@ final class Payment extends Model
     {
         return $this->hasMany(CreditTransaction::class);
     }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'paid_at' => 'date',
+        ];
+    }
 }
