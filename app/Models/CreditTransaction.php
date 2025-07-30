@@ -8,13 +8,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-final class Attendance extends Model
+final class CreditTransaction extends Model
 {
-    /** @use HasFactory<\Database\Factories\AttendanceFactory> */
+    /** @use HasFactory<\Database\Factories\CreditTransactionFactory> */
     use HasFactory;
 
     /**
-     * Get the enrollment associated with the attendance.
+     * Get the enrollment associated with the credit transaction.
      *
      * @return BelongsTo<Enrollment, $this>
      */
@@ -24,12 +24,12 @@ final class Attendance extends Model
     }
 
     /**
-     * Get the lesson associated with the attendance.
+     * Get the payment associated with the credit transaction.
      *
-     * @return BelongsTo<Lesson, $this>
+     * @return BelongsTo<Payment, $this>
      */
-    public function lesson(): BelongsTo
+    public function payment(): BelongsTo
     {
-        return $this->belongsTo(Lesson::class);
+        return $this->belongsTo(Payment::class);
     }
 }

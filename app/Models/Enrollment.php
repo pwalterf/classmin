@@ -35,6 +35,16 @@ final class Enrollment extends Model
     }
 
     /**
+     * Get the attendances associated with the enrollment.
+     *
+     * @return HasMany<Attendance, $this>
+     */
+    public function attendances(): HasMany
+    {
+        return $this->hasMany(Attendance::class);
+    }
+
+    /**
      * Get the payments associated with the enrollment.
      *
      * @return HasMany<Payment, $this>
@@ -42,5 +52,15 @@ final class Enrollment extends Model
     public function payments(): HasMany
     {
         return $this->hasMany(Payment::class);
+    }
+
+    /**
+     * Get the credit transactions associated with the enrollment.
+     *
+     * @return HasMany<CreditTransaction, $this>
+     */
+    public function creditTransactions(): HasMany
+    {
+        return $this->hasMany(CreditTransaction::class);
     }
 }
