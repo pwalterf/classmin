@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Enums\AttendanceStatuses;
+use App\Enums\AttendanceStatus;
 use App\Models\Enrollment;
 use App\Models\Lesson;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -22,7 +22,7 @@ final class AttendanceFactory extends Factory
     public function definition(): array
     {
         return [
-            'status' => $this->faker->randomElement(AttendanceStatuses::getStatuses()),
+            'status' => $this->faker->randomElement(AttendanceStatus::getStatuses()),
             'notes' => $this->faker->text(),
             'registered_at' => $this->faker->date(),
             'lesson_id' => Lesson::factory(),

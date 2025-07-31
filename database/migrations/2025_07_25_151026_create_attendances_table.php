@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Enums\AttendanceStatuses;
+use App\Enums\AttendanceStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,7 +16,7 @@ return new class extends Migration
     {
         Schema::create('attendances', function (Blueprint $table): void {
             $table->id();
-            $table->enum('status', AttendanceStatuses::getStatuses());
+            $table->enum('status', AttendanceStatus::getStatuses());
             $table->text('notes')->nullable();
             $table->date('registered_at');
             $table->foreignId('lesson_id')->constrained();

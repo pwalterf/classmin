@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Enums\EnrollmentStatuses;
+use App\Enums\EnrollmentStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,7 +16,7 @@ return new class extends Migration
     {
         Schema::create('enrollments', function (Blueprint $table): void {
             $table->id();
-            $table->enum('status', EnrollmentStatuses::getStatuses());
+            $table->enum('status', EnrollmentStatus::getStatuses());
             $table->date('enrolled_at');
             $table->tinyInteger('credits');
             $table->tinyInteger('discount_pct')->nullable();

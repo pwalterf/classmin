@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Enums\CourseStatuses;
+use App\Enums\CourseStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('title')->unique();
             $table->text('description')->nullable();
             $table->date('started_at');
-            $table->enum('status', CourseStatuses::getStatuses());
+            $table->enum('status', CourseStatus::getStatuses());
             $table->timestamps();
         });
     }

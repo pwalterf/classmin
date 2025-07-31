@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-enum CreditTransactionTypes: string
+enum CreditTransactionType: string
 {
     case Purchase = 'compra';
     case Use = 'uso';

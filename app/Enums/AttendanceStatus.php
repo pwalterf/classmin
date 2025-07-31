@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-enum EnrollmentStatuses: string
+enum AttendanceStatus: string
 {
-    case Active = 'activo';
-    case Inactive = 'inactivo';
-    case Dropped = 'abandonado';
-    case Completed = 'completado';
+    case Present = 'presente';
+    case Absent = 'ausente';
+    case Late = 'tarde';
+    case Excused = 'justificado';
 
     /**
      * Get all statuses as an array.

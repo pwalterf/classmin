@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Enums\EnrollmentStatuses;
+use App\Enums\EnrollmentStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -74,7 +74,7 @@ final class Enrollment extends Model
     {
         return [
             'enrolled_at' => 'date',
-            'status' => EnrollmentStatuses::class,
+            'status' => EnrollmentStatus::class,
         ];
     }
 }

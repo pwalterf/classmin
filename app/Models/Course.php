@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Enums\CourseStatuses;
+use App\Enums\CourseStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -53,7 +53,7 @@ final class Course extends Model
     {
         return [
             'started_at' => 'date',
-            'status' => CourseStatuses::class,
+            'status' => CourseStatus::class,
         ];
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Enums\CreditTransactionTypes;
+use App\Enums\CreditTransactionType;
 use App\Models\Enrollment;
 use App\Models\Payment;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -23,7 +23,7 @@ final class CreditTransactionFactory extends Factory
     {
         return [
             'transacted_at' => $this->faker->date(),
-            'type' => $this->faker->randomElement(CreditTransactionTypes::getTypes()),
+            'type' => $this->faker->randomElement(CreditTransactionType::getTypes()),
             'credits' => $this->faker->numberBetween(-10, 10),
             'balance' => $this->faker->numberBetween(0, 20),
             'description' => $this->faker->optional()->sentence(),

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Enums\CourseStatuses;
+use App\Enums\CourseStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -23,7 +23,7 @@ final class CourseFactory extends Factory
             'title' => $this->faker->unique()->sentence(),
             'description' => $this->faker->paragraph(),
             'started_at' => $this->faker->date(),
-            'status' => $this->faker->randomElement(CourseStatuses::getStatuses()),
+            'status' => $this->faker->randomElement(CourseStatus::getStatuses()),
         ];
     }
 }

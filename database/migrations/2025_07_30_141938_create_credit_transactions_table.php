@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Enums\CreditTransactionTypes;
+use App\Enums\CreditTransactionType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,7 +17,7 @@ return new class extends Migration
         Schema::create('credit_transactions', function (Blueprint $table): void {
             $table->id();
             $table->date('transacted_at');
-            $table->enum('type', CreditTransactionTypes::getTypes());
+            $table->enum('type', CreditTransactionType::getTypes());
             $table->tinyInteger('credits');
             $table->tinyInteger('balance');
             $table->string('description')->nullable();
