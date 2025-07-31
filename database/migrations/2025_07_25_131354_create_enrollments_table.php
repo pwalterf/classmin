@@ -16,7 +16,7 @@ return new class extends Migration
     {
         Schema::create('enrollments', function (Blueprint $table): void {
             $table->id();
-            $table->enum('status', EnrollmentStatus::getStatuses());
+            $table->enum('status', EnrollmentStatus::values());
             $table->date('enrolled_at');
             $table->tinyInteger('credits');
             $table->tinyInteger('discount_pct')->nullable();

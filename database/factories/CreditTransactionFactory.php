@@ -23,7 +23,7 @@ final class CreditTransactionFactory extends Factory
     {
         return [
             'transacted_at' => $this->faker->date(),
-            'type' => $this->faker->randomElement(CreditTransactionType::getTypes()),
+            'type' => $this->faker->randomElement(CreditTransactionType::cases()),
             'credits' => $this->faker->numberBetween(-10, 10),
             'balance' => $this->faker->numberBetween(0, 20),
             'description' => $this->faker->optional()->sentence(),

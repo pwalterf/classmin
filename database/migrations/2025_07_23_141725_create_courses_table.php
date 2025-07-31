@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('title')->unique();
             $table->text('description')->nullable();
             $table->date('started_at');
-            $table->enum('status', CourseStatus::getStatuses());
+            $table->enum('status', CourseStatus::values());
             $table->timestamps();
         });
     }

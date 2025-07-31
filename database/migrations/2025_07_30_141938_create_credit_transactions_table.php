@@ -17,7 +17,7 @@ return new class extends Migration
         Schema::create('credit_transactions', function (Blueprint $table): void {
             $table->id();
             $table->date('transacted_at');
-            $table->enum('type', CreditTransactionType::getTypes());
+            $table->enum('type', CreditTransactionType::values());
             $table->tinyInteger('credits');
             $table->tinyInteger('balance');
             $table->string('description')->nullable();

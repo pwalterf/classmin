@@ -22,7 +22,7 @@ final class EnrollmentFactory extends Factory
     public function definition(): array
     {
         return [
-            'status' => $this->faker->randomElement(EnrollmentStatus::getStatuses()),
+            'status' => $this->faker->randomElement(EnrollmentStatus::cases()),
             'enrolled_at' => $this->faker->date(),
             'credits' => $this->faker->numberBetween(1, 10),
             'discount_pct' => $this->faker->optional()->numberBetween(0, 50),

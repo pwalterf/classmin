@@ -16,7 +16,7 @@ return new class extends Migration
     {
         Schema::create('attendances', function (Blueprint $table): void {
             $table->id();
-            $table->enum('status', AttendanceStatus::getStatuses());
+            $table->enum('status', AttendanceStatus::values());
             $table->text('notes')->nullable();
             $table->date('registered_at');
             $table->foreignId('lesson_id')->constrained();

@@ -23,7 +23,7 @@ final class CourseFactory extends Factory
             'title' => $this->faker->unique()->sentence(),
             'description' => $this->faker->paragraph(),
             'started_at' => $this->faker->date(),
-            'status' => $this->faker->randomElement(CourseStatus::getStatuses()),
+            'status' => $this->faker->randomElement(CourseStatus::cases()),
         ];
     }
 }

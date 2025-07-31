@@ -22,7 +22,7 @@ final class AttendanceFactory extends Factory
     public function definition(): array
     {
         return [
-            'status' => $this->faker->randomElement(AttendanceStatus::getStatuses()),
+            'status' => $this->faker->randomElement(AttendanceStatus::cases()),
             'notes' => $this->faker->text(),
             'registered_at' => $this->faker->date(),
             'lesson_id' => Lesson::factory(),
