@@ -6,10 +6,10 @@ namespace App\Enums;
 
 enum CreditTransactionTypes: string
 {
-    case Purchase = 'purchase';
-    case Use = 'use';
-    case Adjustment = 'adjustment';
-    case Refund = 'refund';
+    case Purchase = 'compra';
+    case Use = 'uso';
+    case Adjustment = 'ajuste';
+    case Refund = 'reembolso';
 
     /**
      * Get all transaction types as an array.
@@ -19,20 +19,5 @@ enum CreditTransactionTypes: string
     public static function getTypes(): array
     {
         return array_column(self::cases(), 'value');
-    }
-
-    /**
-     * Get labels for each transaction type.
-     *
-     * @return array<string, string>
-     */
-    public static function getLabels(): array
-    {
-        return [
-            self::Purchase->value => 'Compra',
-            self::Use->value => 'Uso',
-            self::Adjustment->value => 'Ajuste',
-            self::Refund->value => 'Reembolso',
-        ];
     }
 }

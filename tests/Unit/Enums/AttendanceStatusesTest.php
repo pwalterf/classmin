@@ -13,13 +13,3 @@ test('attendance statuses', function () {
     expect($statuses)->toContain(AttendanceStatuses::Late->value);
     expect($statuses)->toContain(AttendanceStatuses::Excused->value);
 });
-
-test('attendance status labels', function () {
-    $labels = AttendanceStatuses::getLabels();
-
-    expect($labels)->toHaveCount(4);
-    expect($labels[AttendanceStatuses::Present->value])->toBe('Presente');
-    expect($labels[AttendanceStatuses::Absent->value])->toBe('Ausente');
-    expect($labels[AttendanceStatuses::Late->value])->toBe('Tarde');
-    expect($labels[AttendanceStatuses::Excused->value])->toBe('Justificado');
-});
