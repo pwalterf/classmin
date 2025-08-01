@@ -16,16 +16,6 @@ final class Enrollment extends Model
     use HasFactory;
 
     /**
-     * Get the user associated with the enrollment.
-     *
-     * @return BelongsTo<User, $this>
-     */
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    /**
      * Get the course associated with the enrollment.
      *
      * @return BelongsTo<Course, $this>
@@ -33,6 +23,16 @@ final class Enrollment extends Model
     public function course(): BelongsTo
     {
         return $this->belongsTo(Course::class);
+    }
+
+    /**
+     * Get the student associated with the enrollment.
+     *
+     * @return BelongsTo<Student, $this>
+     */
+    public function student(): BelongsTo
+    {
+        return $this->belongsTo(Student::class);
     }
 
     /**

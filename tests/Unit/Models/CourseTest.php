@@ -13,6 +13,8 @@ test('to array', function () {
         'description',
         'started_at',
         'status',
+        'schedule',
+        'teacher_id',
         'created_at',
         'updated_at',
     ]);

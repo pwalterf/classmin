@@ -6,7 +6,7 @@ namespace Database\Factories;
 
 use App\Enums\EnrollmentStatus;
 use App\Models\Course;
-use App\Models\User;
+use App\Models\Student;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -26,7 +26,7 @@ final class EnrollmentFactory extends Factory
             'enrolled_at' => $this->faker->date(),
             'credits' => $this->faker->numberBetween(1, 10),
             'discount_pct' => $this->faker->optional()->numberBetween(0, 50),
-            'user_id' => User::factory(),
+            'student_id' => Student::factory(),
             'course_id' => Course::factory(),
         ];
     }

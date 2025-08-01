@@ -20,6 +20,8 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->date('started_at');
             $table->enum('status', CourseStatus::values());
+            $table->text('schedule')->nullable();
+            $table->foreignId('teacher_id')->constrained();
             $table->timestamps();
         });
     }

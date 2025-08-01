@@ -20,7 +20,7 @@ return new class extends Migration
             $table->date('enrolled_at');
             $table->tinyInteger('credits');
             $table->tinyInteger('discount_pct')->nullable();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('student_id')->constrained();
             $table->foreignId('course_id')->constrained();
             $table->timestamps();
         });

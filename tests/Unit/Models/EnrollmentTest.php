@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use App\Models\Course;
 use App\Models\Enrollment;
-use App\Models\User;
+use App\Models\Student;
 
 test('to array', function () {
     $enrollment = Enrollment::factory()->create()->refresh();
@@ -15,23 +15,23 @@ test('to array', function () {
         'enrolled_at',
         'credits',
         'discount_pct',
-        'user_id',
+        'student_id',
         'course_id',
         'created_at',
         'updated_at',
     ]);
 });
 
-test('belongs to a user', function () {
-    $enrollment = Enrollment::factory()->create();
-
-    expect($enrollment->user)->toBeInstanceOf(User::class);
-});
-
 test('belongs to a course', function () {
     $enrollment = Enrollment::factory()->create();
 
     expect($enrollment->course)->toBeInstanceOf(Course::class);
+});
+
+test('belongs to a student', function () {
+    $enrollment = Enrollment::factory()->create();
+
+    expect($enrollment->student)->toBeInstanceOf(Student::class);
 });
 
 test('has many attendances', function () {

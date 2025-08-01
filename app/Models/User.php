@@ -6,7 +6,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -37,13 +37,13 @@ final class User extends Authenticatable
     ];
 
     /**
-     * Get the enrollments for the user.
+     * Get the teachers associated with the user.
      *
-     * @return HasMany<Enrollment, $this>
+     * @return HasOne<Teacher, $this>
      */
-    public function enrollments(): HasMany
+    public function teacher(): HasOne
     {
-        return $this->hasMany(Enrollment::class);
+        return $this->hasOne(Teacher::class);
     }
 
     /**
