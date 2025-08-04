@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use App\Models\Course;
+use App\Models\Teacher;
+use Illuminate\Database\QueryException;
 
 test('to array', function () {
     $course = Course::factory()->create()->refresh();
@@ -18,6 +20,12 @@ test('to array', function () {
         'created_at',
         'updated_at',
     ]);
+});
+
+test('belongs to a teacher', function () {
+    $course = Course::factory()->create();
+
+    expect($course->teacher)->toBeInstanceOf(Teacher::class);
 });
 
 test('has many course prices', function () {
@@ -37,3 +45,21 @@ test('has many lessons', function () {
 
     expect($course->lessons)->toHaveCount(3);
 });
+
+test('two courses with the same title can exist for different teachers', function () {
+    $teacher1 = Teacher::factory()->create();
+    $teacher2 = Teacher::factory()->create();
+
+    Course::factory()->for($teacher1)->create(['title' => 'Unique Course Title']);
+    Course::factory()->for($teacher2)->create(['title' => 'Unique Course Title']);
+})->throws(QueryException::class);
+
+test('same teacher may not have two courses with the same title', function () {
+    $teacher = Teacher::factory()->create();
+    Course::factory()
+        ->for($teacher)
+        ->count(2)
+        ->create([
+            'title' => 'Unique Course Title',
+        ]);
+})->throws(QueryException::class);

@@ -7,12 +7,23 @@ namespace App\Models;
 use App\Enums\CourseStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 final class Course extends Model
 {
     /** @use HasFactory<\Database\Factories\CourseFactory> */
     use HasFactory;
+
+    /**
+     * Get the teacher that owns the course.
+     *
+     * @return BelongsTo<Teacher, $this>
+     */
+    public function teacher(): BelongsTo
+    {
+        return $this->belongsTo(Teacher::class);
+    }
 
     /**
      * Get the prices for the course.

@@ -23,6 +23,8 @@ return new class extends Migration
             $table->text('schedule')->nullable();
             $table->foreignId('teacher_id')->constrained();
             $table->timestamps();
+
+            $table->unique(['title', 'teacher_id']);
         });
     }
 };
