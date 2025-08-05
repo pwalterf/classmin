@@ -4,17 +4,29 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Admin;
 
+use App\Actions\Admin\CreateUserAction;
+use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\UserStoreRequest;
+use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use Inertia\Inertia;
+use Inertia\Response;
 
 final class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(): void
+    public function index(): Response
     {
-        //
+        Gate::authorize('viewAny', User::class);
+
+        return Inertia::render('admin/users/Index', [
+            'users' => User::with('roles')->get(),
+        ]);
     }
 
     /**
@@ -28,9 +40,13 @@ final class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): void
+    public function store(UserStoreRequest $request, CreateUserAction $action): RedirectResponse
     {
-        //
+        Gate::authorize('create', User::class);
+
+        $action->handle($request->validated(), UserRole::ADMIN);
+
+        return to_route('users.index');
     }
 
     /**

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -24,7 +26,8 @@ final class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
         'password',
     ];
@@ -38,6 +41,18 @@ final class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    /**
+     * Get the full name of the user.
+     *
+     * @return Attribute<string, string>
+     */
+    public function fullName(): Attribute
+    {
+        return new Attribute(
+            get: fn (): string => $this->first_name.' '.$this->last_name
+        );
+    }
 
     /**
      * Get the teachers associated with the user.

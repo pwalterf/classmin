@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
+use App\Enums\UserRole;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 final class DatabaseSeeder extends Seeder
 {
@@ -22,16 +24,19 @@ final class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         $adminUser = User::factory()->create([
-            'name' => 'Admin User',
+            'first_name' => 'Admin',
+            'last_name' => 'User',
             'email' => 'admin@example.com',
+            'password' => Hash::make('admintest'), // Ensure a password is set
         ]);
 
         $teacherUser = User::factory()->create([
-            'name' => 'Teacher User',
+            'first_name' => 'Teacher',
+            'last_name' => 'User',
             'email' => 'teacher@example.com',
         ]);
 
-        $adminUser->assignRole('admin');
-        $teacherUser->assignRole('teacher');
+        $adminUser->assignRole(UserRole::ADMIN);
+        $teacherUser->assignRole(UserRole::TEACHER);
     }
 }

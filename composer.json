@@ -69,7 +69,7 @@
         "lint": "pint",
         "refactor": "rector",
         "test:unit": "@php artisan test --parallel",
-        "test:types": "phpstan",
+        "test:types": "phpstan analyse",
         "test:lint": "pint --test",
         "test:refactor": "rector --dry-run",
         "testing": [

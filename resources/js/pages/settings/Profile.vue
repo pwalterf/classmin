@@ -29,7 +29,8 @@ const page = usePage();
 const user = page.props.auth.user as User;
 
 const form = useForm({
-    name: user.name,
+    first_name: user.first_name,
+    last_name: user.last_name,
     email: user.email,
 });
 
@@ -42,6 +43,7 @@ const submit = () => {
 
 <template>
     <AppLayout :breadcrumbs="breadcrumbItems">
+
         <Head title="Profile settings" />
 
         <SettingsLayout>
@@ -50,35 +52,32 @@ const submit = () => {
 
                 <form @submit.prevent="submit" class="space-y-6">
                     <div class="grid gap-2">
-                        <Label for="name">Name</Label>
-                        <Input id="name" class="mt-1 block w-full" v-model="form.name" required autocomplete="name" placeholder="Full name" />
-                        <InputError class="mt-2" :message="form.errors.name" />
+                        <Label for="first_name">First Name</Label>
+                        <Input id="first_name" class="mt-1 block w-full" v-model="form.first_name" required
+                            autocomplete="first_name" placeholder="First Name" />
+                        <InputError class="mt-2" :message="form.errors.first_name" />
+                    </div>
+
+                    <div class="grid gap-2">
+                        <Label for="last_name">Last Name</Label>
+                        <Input id="last_name" class="mt-1 block w-full" v-model="form.last_name" required
+                            autocomplete="last_name" placeholder="Last Name" />
+                        <InputError class="mt-2" :message="form.errors.last_name" />
                     </div>
 
                     <div class="grid gap-2">
                         <Label for="email">Email address</Label>
-                        <Input
-                            id="email"
-                            type="email"
-                            class="mt-1 block w-full"
-                            v-model="form.email"
-                            required
-                            autocomplete="username"
-                            placeholder="Email address"
-                        />
+                        <Input id="email" type="email" class="mt-1 block w-full" v-model="form.email" required
+                            autocomplete="username" placeholder="Email address" />
                         <InputError class="mt-2" :message="form.errors.email" />
                     </div>
 
                     <div v-if="mustVerifyEmail && !user.email_verified_at">
                         <p class="-mt-4 text-sm text-muted-foreground">
                             Your email address is unverified.
-                            <Link
-                                :href="route('verification.send')"
-                                method="post"
-                                as="button"
-                                class="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
-                            >
-                                Click here to resend the verification email.
+                            <Link :href="route('verification.send')" method="post" as="button"
+                                class="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500">
+                            Click here to resend the verification email.
                             </Link>
                         </p>
 
@@ -90,12 +89,8 @@ const submit = () => {
                     <div class="flex items-center gap-4">
                         <Button :disabled="form.processing">Save</Button>
 
-                        <Transition
-                            enter-active-class="transition ease-in-out"
-                            enter-from-class="opacity-0"
-                            leave-active-class="transition ease-in-out"
-                            leave-to-class="opacity-0"
-                        >
+                        <Transition enter-active-class="transition ease-in-out" enter-from-class="opacity-0"
+                            leave-active-class="transition ease-in-out" leave-to-class="opacity-0">
                             <p v-show="form.recentlySuccessful" class="text-sm text-neutral-600">Saved.</p>
                         </Transition>
                     </div>

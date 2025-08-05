@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
+use App\Enums\UserRole;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +19,7 @@ final class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (! Auth::check() || ! Auth::user()->hasRole(['admin', 'super admin'])) {
+        if (! Auth::check() || ! Auth::user()->hasRole(UserRole::ADMIN)) {
             abort(Response::HTTP_FORBIDDEN);
         }
 
