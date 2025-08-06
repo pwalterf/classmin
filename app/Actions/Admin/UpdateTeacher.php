@@ -20,7 +20,6 @@ final readonly class UpdateTeacher
      * Execute the action.
      *
      * @param  array<string, mixed>  $teacherData
-     * @return Teacher $teacher
      */
     public function handle(Teacher $teacher, array $teacherData): Teacher
     {

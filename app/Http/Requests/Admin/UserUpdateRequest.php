@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Requests\Admin;
 
 use App\Enums\UserRole;
-use App\Enums\UserStatus;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -22,7 +21,6 @@ final class UserUpdateRequest extends FormRequest
             'first_name' => ['required', 'string', 'max:50'],
             'last_name' => ['required', 'string', 'max:50'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:100', Rule::unique('users')->ignore($this->user()->id)],
-            'status' => ['required', 'string', Rule::enum(UserStatus::class)],
             'roles' => ['required', 'array'],
             'roles.*' => ['required', 'string', Rule::enum(UserRole::class)->only([UserRole::ADMIN, UserRole::TEACHER])],
         ];

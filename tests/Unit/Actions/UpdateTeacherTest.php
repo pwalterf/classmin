@@ -17,7 +17,6 @@ test('update teacher data with new data', function () {
         'first_name' => $teacher->user->first_name,
         'last_name' => $teacher->user->last_name,
         'email' => $teacher->user->email,
-        'status' => $teacher->user->status,
         'bio' => 'New Bio description',
     ];
 
