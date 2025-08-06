@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Actions\Admin\CreateTeacher;
 use App\Enums\UserRole;
+use App\Enums\UserStatus;
 use App\Models\Teacher;
 use App\Models\User;
 use Spatie\Permission\Contracts\Role;
@@ -16,6 +17,7 @@ test('CreateTeacher action creates a teacher with user and roles', function () {
         'last_name' => 'Doe',
         'email' => 'john.doe@example.com',
         'password' => 'password',
+        'status' => UserStatus::ACTIVE,
         'roles' => ['teacher'],
         'bio' => 'A passionate educator.',
     ];

@@ -17,7 +17,9 @@ final readonly class SyncUserRoles
     public function handle(User $user, array $roles): void
     {
         DB::transaction(function () use ($user, $roles): void {
-            $user->syncRoles($roles);
+            if (! $user->hasExactRoles($roles)) {
+                $user->syncRoles($roles);
+            }
         });
     }
 }

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 final readonly class UpdateUser
 {
     /**
-     * CreateUser constructor.
+     * UpdateUser constructor.
      */
     public function __construct(
         private SyncUserRoles $syncUserRoles,
@@ -30,7 +30,7 @@ final readonly class UpdateUser
                 $user->save();
             }
 
-            if (! $user->hasExactRoles($userData['roles'])) {
+            if (array_key_exists('roles', $userData)) {
                 $this->syncUserRoles->handle($user, $userData['roles']);
             }
 

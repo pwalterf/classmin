@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
 final readonly class CreateUserWithRoles
 {
     /**
-     * CreateUser constructor.
+     * CreateUserWithRoles constructor.
      */
     public function __construct(
         private SyncUserRoles $syncUserRoles,
@@ -31,6 +31,7 @@ final readonly class CreateUserWithRoles
                 'last_name' => $userData['last_name'],
                 'email' => $userData['email'],
                 'password' => Hash::make($userData['password'] ?? Str::password(12)),
+                'status' => $userData['status'],
             ]);
 
             $this->syncUserRoles->handle($user, $userData['roles']);

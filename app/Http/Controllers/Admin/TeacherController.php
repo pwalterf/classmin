@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Admin;
 
 use App\Actions\Admin\CreateTeacher;
+use App\Actions\Admin\DeleteTeacher;
 use App\Actions\Admin\UpdateTeacher;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\TeacherStoreRequest;
@@ -81,8 +82,12 @@ final class TeacherController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id): void
+    public function destroy(Teacher $teacher, DeleteTeacher $deleteTeacher): RedirectResponse
     {
-        //
+        Gate::authorize('delete');
+
+        $deleteTeacher->handle($teacher);
+
+        return to_route('teachers.index');
     }
 }

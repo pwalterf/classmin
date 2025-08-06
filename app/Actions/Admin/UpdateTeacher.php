@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 final readonly class UpdateTeacher
 {
     /**
-     * CreateUser constructor.
+     * UpdateTeacher constructor.
      */
     public function __construct(
         private UpdateUser $updateUser,
@@ -25,9 +25,9 @@ final readonly class UpdateTeacher
     public function handle(Teacher $teacher, array $teacherData): Teacher
     {
         return DB::transaction(function () use ($teacher, $teacherData): Teacher {
-            $this->updateUser->handle($teacher->user, $teacherData);
+            $this->updateUser->handle($teacher->user, collect($teacherData)->except(['bio'])->toArray());
 
-            $teacher->fill($teacherData);
+            $teacher->fill(collect($teacherData)->only(['bio'])->toArray());
 
             if ($teacher->isDirty()) {
                 $teacher->save();
