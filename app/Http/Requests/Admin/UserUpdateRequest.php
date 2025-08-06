@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace App\Http\Requests\Admin;
 
 use App\Enums\UserRole;
-use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-final class UserStoreRequest extends FormRequest
+final class UserUpdateRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -21,7 +20,7 @@ final class UserStoreRequest extends FormRequest
         return [
             'first_name' => ['required', 'string', 'max:50'],
             'last_name' => ['required', 'string', 'max:50'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:100', 'unique:'.User::class],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:100', Rule::unique('users')->ignore($this->user()->id)],
             'roles' => ['required', 'array'],
             'roles.*' => ['required', 'string', Rule::enum(UserRole::class)->only([UserRole::ADMIN, UserRole::TEACHER])],
         ];

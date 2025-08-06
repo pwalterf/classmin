@@ -22,3 +22,9 @@ test('belongs to user', function () {
 
     expect($teacher->user)->toBeInstanceOf(User::class);
 });
+
+test('has many courses', function () {
+    $teacher = Teacher::factory()->hasCourses(3)->create();
+
+    expect($teacher->courses)->toHaveCount(3);
+});

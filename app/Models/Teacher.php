@@ -15,6 +15,16 @@ final class Teacher extends Model
     use HasFactory;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
+     */
+    protected $fillable = [
+        'bio',
+        'user_id',
+    ];
+
+    /**
      * Get the user that owns the teacher.
      *
      * @return BelongsTo<User, $this>
