@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Seeders;
 
 use App\Enums\UserRole;
+use App\Models\Teacher;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -30,13 +31,12 @@ final class DatabaseSeeder extends Seeder
             'password' => Hash::make('admintest'), // Ensure a password is set
         ]);
 
-        $teacherUser = User::factory()->create([
-            'first_name' => 'Teacher',
-            'last_name' => 'User',
-            'email' => 'teacher@example.com',
-        ]);
+        Teacher::factory()
+            ->count(15)
+            ->sequence(fn (): array => ['user_id' => User::factory()->create()])
+            ->create();
 
         $adminUser->assignRole(UserRole::ADMIN);
-        $teacherUser->assignRole(UserRole::TEACHER);
+        // $teacherUser->assignRole(UserRole::TEACHER);
     }
 }

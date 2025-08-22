@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Admin;
 
+use App\Enums\UserRole;
 use Illuminate\Foundation\Http\FormRequest;
 
 final class TeacherStoreRequest extends FormRequest
@@ -21,5 +22,15 @@ final class TeacherStoreRequest extends FormRequest
                 'bio' => ['nullable', 'string', 'max:500'],
             ]
         );
+    }
+
+    /**
+     * Prepare the data for validation.
+     */
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'roles' => [UserRole::TEACHER->value],
+        ]);
     }
 }

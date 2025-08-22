@@ -7,11 +7,13 @@ namespace App\Http\Controllers\Admin;
 use App\Actions\Admin\CreateTeacher;
 use App\Actions\Admin\DeleteTeacher;
 use App\Actions\Admin\UpdateTeacher;
+use App\Enums\UserStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\TeacherStoreRequest;
 use App\Http\Requests\Admin\TeacherUpdateRequest;
 use App\Http\Resources\TeacherResource;
 use App\Models\Teacher;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
@@ -24,19 +26,12 @@ final class TeacherController extends Controller
      */
     public function index(): Response
     {
-        Gate::authorize('viewAny');
+        Gate::authorize('viewAny', User::class);
 
         return Inertia::render('admin/teachers/Index', [
             'teachers' => TeacherResource::collection(Teacher::with('user')->get()),
+            'statuses' => UserStatus::cases(),
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create(): void
-    {
-        //
     }
 
     /**
@@ -44,27 +39,11 @@ final class TeacherController extends Controller
      */
     public function store(TeacherStoreRequest $request, CreateTeacher $createTeacher): RedirectResponse
     {
-        Gate::authorize('create');
+        Gate::authorize('create', Teacher::class);
 
         $createTeacher->handle($request->validated());
 
         return to_route('teachers.index');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id): void
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id): void
-    {
-        //
     }
 
     /**

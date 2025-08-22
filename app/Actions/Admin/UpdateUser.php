@@ -27,6 +27,7 @@ final readonly class UpdateUser
             $user->fill($userData);
 
             if ($user->isDirty()) {
+                app(ChangeUserStatus::class)->handle($user, $userData['status']);
                 $user->save();
             }
 

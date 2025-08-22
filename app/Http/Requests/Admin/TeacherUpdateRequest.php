@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Admin;
 
+use App\Enums\UserStatus;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 final class TeacherUpdateRequest extends FormRequest
 {
@@ -15,11 +17,12 @@ final class TeacherUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-        return array_merge(
-            new UserUpdateRequest()->rules(),
-            [
-                'bio' => ['nullable', 'string', 'max:500'],
-            ]
-        );
+        return [
+            'first_name' => ['required', 'string', 'max:50'],
+            'last_name' => ['required', 'string', 'max:50'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:100', Rule::unique('users')->ignore($this->user_id)],
+            'status' => ['required', 'string', Rule::enum(UserStatus::class)],
+            'bio' => ['nullable', 'string', 'max:500'],
+        ];
     }
 }

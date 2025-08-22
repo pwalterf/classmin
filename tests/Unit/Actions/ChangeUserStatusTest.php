@@ -11,7 +11,7 @@ test('admin can change user status', function () {
         'status' => UserStatus::ACTIVE,
     ]);
 
-    $user = app(ChangeUserStatus::class)->handle($user, UserStatus::PAUSED);
+    $user = app(ChangeUserStatus::class)->handle($user, UserStatus::PAUSED->value);
 
     expect($user->status)->toBe(UserStatus::PAUSED);
 });
