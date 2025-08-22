@@ -63,7 +63,7 @@ final class TeacherController extends Controller
      */
     public function destroy(Teacher $teacher, DeleteTeacher $deleteTeacher): RedirectResponse
     {
-        Gate::authorize('delete');
+        Gate::authorize('delete', $teacher);
 
         $deleteTeacher->handle($teacher);
 
