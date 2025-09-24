@@ -14,6 +14,8 @@ import { useDateFormatter } from '@/composables/useDateFormatter';
 import DataTable from '@/components/ui/data-table/DataTable.vue';
 import { columns } from '@/components/enrollments/columns';
 import EnrollmentSelection from '@/components/enrollments/EnrollmentSelection.vue';
+import CoursePriceForm from '@/components/course-prices/FormModal.vue';
+import HistoryModal from '@/components/course-prices/HistoryModal.vue';
 
 interface Props {
   course: Course;
@@ -29,7 +31,9 @@ const { df } = useDateFormatter();
 const loading = ref(false);
 const openCourse = ref(false);
 const openDeleteCourse = ref(false);
-const openPrices = ref(false);
+const openNewPrice = ref(false);
+const openCurrentPrice = ref(false);
+const openPriceHistory = ref(false);
 const openSelectStudents = ref(false);
 const studentsEnrolled = computed(() => props.course.enrollments.map((enrollment) => enrollment.student));
 
@@ -64,7 +68,7 @@ const fetchStudents = () => {
   });
 };
 
-const deleteSubmit = () => {
+const deleteCourse = () => {
   router.delete(route('courses.destroy', props.course), {
     onSuccess: () => {
       toast.success('Course deleted successfully', {
@@ -137,11 +141,49 @@ const deleteSubmit = () => {
               </div>
             </div>
           </CardContent>
+
+          <AlertDialog v-model:open="openDeleteCourse">
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This course will no longer be
+                  accessible by you or others you've shared it with.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <Button variant="destructive" @click="deleteCourse">
+                  Delete
+                </Button>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </Card>
 
         <Card>
-          <CardHeader>
+          <CardHeader class="flex justify-between">
             <CardTitle>Current price</CardTitle>
+            <DropdownMenu>
+              <DropdownMenuTrigger as-child>
+                <Button variant="ghost" size="sm">
+                  <span class="sr-only">Open menu</span>
+                  <MoreHorizontal class="w-4 h-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                <DropdownMenuItem @select="openCurrentPrice = true">
+                  Edit price
+                </DropdownMenuItem>
+                <DropdownMenuItem @select="openNewPrice = true">
+                  New price
+                </DropdownMenuItem>
+                <DropdownMenuItem @select="openPriceHistory = true">
+                  View history
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </CardHeader>
           <CardContent>
             <div class="grid gap-4">
@@ -159,6 +201,13 @@ const deleteSubmit = () => {
               </div>
             </div>
           </CardContent>
+
+          <CoursePriceForm v-model:open="openCurrentPrice" title="Edit Course Price"
+            description="Edit the price of the course" :course="course" :course-price="course.lastPrice" />
+          <CoursePriceForm v-model:open="openNewPrice" title="New Course Price"
+            description="Create a new price for the course" :course="course" />
+          <HistoryModal v-model:open="openPriceHistory" title="Price History"
+            description="View the price history for this course" :course="course" />
         </Card>
 
         <Card class="col-span-4">
@@ -175,24 +224,6 @@ const deleteSubmit = () => {
           </CardContent>
         </Card>
       </div>
-
-      <AlertDialog v-model:open="openDeleteCourse">
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This action cannot be undone. This course will no longer be
-              accessible by you or others you've shared it with.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <Button variant="destructive" @click="deleteSubmit">
-              Delete
-            </Button>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </div>
   </AppLayout>
 </template>
