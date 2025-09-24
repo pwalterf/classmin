@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-enum AttendanceStatus: string
+use JsonSerializable;
+
+enum AttendanceStatus: string implements JsonSerializable
 {
     case PRESENT = 'present';
     case ABSENT = 'absent';
@@ -45,5 +47,17 @@ enum AttendanceStatus: string
             self::LATE => 'yellow',
             self::EXCUSED => 'blue',
         };
+    }
+
+    /**
+     * Get the JSON representation of the status.
+     */
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'value' => $this->value,
+            'label' => $this->label(),
+            'color' => $this->color(),
+        ];
     }
 }

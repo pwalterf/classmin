@@ -17,18 +17,30 @@ interface Props {
   teacher?: Teacher;
 };
 
+interface TeacherForm {
+  first_name: string;
+  last_name: string;
+  email: string;
+  status: string;
+  user_id: number | null;
+  errors?: {
+    [key: string]: string | undefined;
+  };
+  [key: string]: any;
+};
+
 const props = defineProps<Props>();
 
 const emit = defineEmits(['update:open']);
 
 const userStatuses = computed(() => (usePage().props.statuses as Enum[]));
 
-const form = useForm({
+const form = useForm<TeacherForm>({
   first_name: props.teacher?.user.first_name || '',
   last_name: props.teacher?.user.last_name || '',
   email: props.teacher?.user.email || '',
   status: props.teacher?.user.status.value || '',
-  user_id: props.teacher?.user.id || '',
+  user_id: props.teacher?.user.id || null,
 });
 
 const submitForm = () => {

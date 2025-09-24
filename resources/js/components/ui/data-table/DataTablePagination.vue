@@ -13,6 +13,7 @@ import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-v
 
 interface Props {
   table: Table<TData>;
+  rowsPerPage?: boolean;
 };
 
 defineProps<Props>();
@@ -21,7 +22,7 @@ defineProps<Props>();
 <template>
   <div class="flex items-center justify-end px-2">
     <div class="flex items-center space-x-6 lg:space-x-8">
-      <div class="flex items-center space-x-2">
+      <div v-if="rowsPerPage ?? true" class="flex items-center space-x-2">
         <p class="text-sm font-medium">
           Rows per page
         </p>

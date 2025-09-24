@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-enum EnrollmentStatus: string
+use JsonSerializable;
+
+enum EnrollmentStatus: string implements JsonSerializable
 {
     case ACTIVE = 'active';
     case INACTIVE = 'inactive';
@@ -45,5 +47,17 @@ enum EnrollmentStatus: string
             self::DROPPED => 'red',
             self::COMPLETED => 'blue',
         };
+    }
+
+    /**
+     * Get the JSON representation of the status.
+     */
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'value' => $this->value,
+            'label' => $this->label(),
+            'color' => $this->color(),
+        ];
     }
 }

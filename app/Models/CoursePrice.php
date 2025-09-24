@@ -14,6 +14,19 @@ final class CoursePrice extends Model
     use HasFactory;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
+     */
+    protected $fillable = [
+        'price',
+        'currency',
+        'started_at',
+        'ended_at',
+        'course_id',
+    ];
+
+    /**
      * Get the course that owns the price.
      *
      * @return BelongsTo<Course, $this>

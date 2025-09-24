@@ -4,6 +4,7 @@ import { ColumnDef } from '@tanstack/vue-table';
 import { Badge } from '@/components/ui/badge';
 import DataTableDropdown from '@/components/teachers/DataTableDropdown.vue';
 import DataTableColumnHeader from '@/components/ui/data-table/DataTableColumnHeader.vue';
+import { formatDate } from '@vueuse/core';
 
 export const columns: ColumnDef<Teacher>[] = [
   {
@@ -26,9 +27,10 @@ export const columns: ColumnDef<Teacher>[] = [
     enableHiding: false,
   },
   {
+    id: 'register date',
     accessorKey: 'created_at',
     header: ({ column }) => h(DataTableColumnHeader, { column: column as any, title: 'Register date' }),
-    cell: ({ row }) => h('div', row.getValue('created_at')),
+    cell: ({ row }) => h('div', formatDate(new Date(row.getValue('register date')), 'DD/MM/YYYY')),
   },
   {
     id: 'status',

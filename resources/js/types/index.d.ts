@@ -1,4 +1,5 @@
 import type { LucideIcon } from 'lucide-vue-next';
+import { DateValue } from 'reka-ui';
 import type { Config } from 'ziggy-js';
 
 export interface Auth {
@@ -25,10 +26,18 @@ export type AppPageProps<T extends Record<string, unknown> = Record<string, unkn
     sidebarOpen: boolean;
 };
 
-export interface Enum {
+export type BreadcrumbItemType = BreadcrumbItem;
+
+export interface Facet {
     value: string;
     label: string;
-    color: string;
+    options: Enum[];
+}
+
+export interface Enum {
+    value: string;
+    label?: string;
+    color?: string;
 };
 
 export interface User {
@@ -44,16 +53,52 @@ export interface User {
     updated_at: string;
 };
 
-export type BreadcrumbItemType = BreadcrumbItem;
-
 export interface Teacher {
     id: number;
     bio: string | null;
     user: User;
 };
 
-export interface Facet {
-    value: string
-    label: string
-    options: Array<Enum>
-}
+export interface Course {
+    id: number;
+    title: string;
+    description: string;
+    started_at: DateValue | string | undefined;
+    status: Enum;
+    schedule: string | null;
+    teacher: Teacher;
+    enrollments: Enrollment[];
+    prices: CoursePrice[];
+    lastPrice: CoursePrice;
+    students: Student[];
+};
+
+export interface CoursePrice {
+    id: number;
+    price: number;
+    currency: string;
+    started_at: DateValue | string | undefined;
+    ended_at: DateValue | string | undefined;
+    course: Course;
+};
+
+export interface Student {
+    id: number;
+    first_name: string;
+    last_name: string;
+    full_name: string;
+    email: string;
+    date_of_birth: DateValue | string | undefined;
+    phone_number: string | null;
+    teacher: Teacher;
+};
+
+export interface Enrollment {
+    id?: number;
+    status: Enum;
+    enrolled_at: DateValue | string | undefined;
+    credits: number;
+    discount_pct: number | undefined;
+    student: Student;
+    course?: Course;
+};

@@ -16,6 +16,20 @@ final class Enrollment extends Model
     use HasFactory;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
+     */
+    protected $fillable = [
+        'enrolled_at',
+        'status',
+        'credits',
+        'discount_pct',
+        'student_id',
+        'course_id',
+    ];
+
+    /**
      * Get the course associated with the enrollment.
      *
      * @return BelongsTo<Course, $this>

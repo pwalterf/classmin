@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-enum CourseStatus: string
+use JsonSerializable;
+
+enum CourseStatus: string implements JsonSerializable
 {
     case ACTIVE = 'active';
     case INACTIVE = 'inactive';
@@ -51,5 +53,17 @@ enum CourseStatus: string
             self::CANCELLED => 'red',
             self::HOLIDAY => 'orange',
         };
+    }
+
+    /**
+     * Get the JSON representation of the status.
+     */
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'value' => $this->value,
+            'label' => $this->label(),
+            'color' => $this->color(),
+        ];
     }
 }

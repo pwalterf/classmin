@@ -23,7 +23,7 @@ final class TeacherResource extends JsonResource
         return [
             'id' => $this->id,
             'bio' => $this->bio,
-            'created_at' => $this->created_at->format('d/m/Y'),
+            'created_at' => $this->created_at,
             'user' => new UserResource($this->whenLoaded('user')),
         ];
     }

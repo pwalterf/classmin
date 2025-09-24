@@ -14,6 +14,7 @@ test('to array', function () {
         'email',
         'date_of_birth',
         'phone_number',
+        'teacher_id',
         'created_at',
         'updated_at',
     ]);

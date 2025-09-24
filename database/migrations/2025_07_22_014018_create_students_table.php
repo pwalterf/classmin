@@ -17,10 +17,13 @@ return new class extends Migration
             $table->id();
             $table->string('first_name');
             $table->string('last_name');
-            $table->string('email')->unique();
+            $table->string('email');
             $table->date('date_of_birth')->nullable();
             $table->string('phone_number')->nullable();
+            $table->foreignId('teacher_id')->constrained();
             $table->timestamps();
+
+            $table->unique(['email', 'teacher_id']);
         });
     }
 };

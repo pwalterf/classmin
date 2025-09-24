@@ -43,4 +43,14 @@ final class Teacher extends Model
     {
         return $this->hasMany(Course::class);
     }
+
+    /**
+     * Get the students associated with the teacher.
+     *
+     * @return HasMany<Student, $this>
+     */
+    public function students(): HasMany
+    {
+        return $this->hasMany(Student::class);
+    }
 }

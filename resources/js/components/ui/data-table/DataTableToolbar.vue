@@ -19,8 +19,11 @@ import { Button } from '@/components/ui/button';
 import { Facet } from '@/types';
 
 interface Props {
-  table: Table<TData>
-  facets?: Facet[]
+  table: Table<TData>;
+  facets?: Facet[];
+  filter?: boolean;
+  settings?: boolean;
+  actionButton?: string;
 };
 
 const props = defineProps<Props>();
@@ -30,7 +33,7 @@ const isFiltered = computed(() => props.table.getState().columnFilters.length > 
 
 <template>
   <div class="flex items-center justify-between">
-    <div class="flex flex-1 items-center space-x-2">
+    <div v-if="filter ?? true" class="flex flex-1 items-center space-x-2">
       <Input id="filter" placeholder="Filter..." :model-value="(table.getState().globalFilter as string) ?? ''"
         class="h-8 w-[150px] lg:w-[250px]" @input="table.setGlobalFilter($event.target.value)" />
       <template v-for="facet in facets">
@@ -44,7 +47,7 @@ const isFiltered = computed(() => props.table.getState().columnFilters.length > 
       </Button>
     </div>
 
-    <DropdownMenu>
+    <DropdownMenu v-if="settings ?? true">
       <DropdownMenuTrigger as-child>
         <Button variant="outline" class="ml-auto">
           View
@@ -62,5 +65,9 @@ const isFiltered = computed(() => props.table.getState().columnFilters.length > 
         </DropdownMenuCheckboxItem>
       </DropdownMenuContent>
     </DropdownMenu>
+
+    <Button v-if="actionButton" type="button" variant="outline" @click="$emit('action-button-click')">
+      {{ actionButton }}
+    </Button>
   </div>
 </template>

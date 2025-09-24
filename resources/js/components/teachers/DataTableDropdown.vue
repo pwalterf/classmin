@@ -19,7 +19,7 @@ const showModal = ref(false);
 const showDeleteModal = ref(false);
 
 const deleteSubmit = () => {
-  router.delete(route('teachers.update', props.teacher), {
+  router.delete(route('teachers.destroy', props.teacher), {
     onSuccess: () => {
       toast.success('Teacher deleted successfully', {
         description: 'The teacher has been deleted.',
@@ -54,7 +54,7 @@ const deleteSubmit = () => {
       </DropdownMenuItem>
       <DropdownMenuSeparator />
       <DropdownMenuItem class="text-red-600" @select="showDeleteModal = true">
-        Delete preset
+        Delete teacher
       </DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>
@@ -67,7 +67,7 @@ const deleteSubmit = () => {
       <AlertDialogHeader>
         <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
         <AlertDialogDescription>
-          This action cannot be undone. This preset will no longer be
+          This action cannot be undone. This teacher will no longer be
           accessible by you or others you've shared it with.
         </AlertDialogDescription>
       </AlertDialogHeader>

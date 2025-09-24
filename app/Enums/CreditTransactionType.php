@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-enum CreditTransactionType: string
+use JsonSerializable;
+
+enum CreditTransactionType: string implements JsonSerializable
 {
     case PURCHASE = 'purchase';
     case USE = 'use';
@@ -45,5 +47,17 @@ enum CreditTransactionType: string
             self::ADJUSTMENT => 'yellow',
             self::REFUND => 'red',
         };
+    }
+
+    /**
+     * Get the JSON representation of the status.
+     */
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'value' => $this->value,
+            'label' => $this->label(),
+            'color' => $this->color(),
+        ];
     }
 }

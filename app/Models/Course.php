@@ -5,15 +5,31 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\CourseStatus;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 final class Course extends Model
 {
     /** @use HasFactory<\Database\Factories\CourseFactory> */
     use HasFactory;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
+     */
+    protected $fillable = [
+        'title',
+        'description',
+        'started_at',
+        'status',
+        'schedule',
+        'teacher_id',
+    ];
 
     /**
      * Get the teacher that owns the course.
@@ -53,6 +69,34 @@ final class Course extends Model
     public function lessons(): HasMany
     {
         return $this->hasMany(Lesson::class);
+    }
+
+    /**
+     * Get the latest price for the course.
+     *
+     * @return HasOne<CoursePrice, $this>
+     */
+    public function lastPrice(): HasOne
+    {
+        return $this->prices()->one()->ofMany([
+            'started_at' => 'max',
+            'id' => 'max',
+        ]);
+    }
+
+    /**
+     * Get the latest price for the course.
+     *
+     * @return HasOne<CoursePrice, $this>
+     */
+    public function nextPrice(string $started_at): HasOne
+    {
+        return $this->prices()->one()->ofMany([
+            'started_at' => 'min',
+            'id' => 'min',
+        ], function (Builder $query) use ($started_at): void {
+            $query->where('started_at', '>', $started_at);
+        });
     }
 
     /**

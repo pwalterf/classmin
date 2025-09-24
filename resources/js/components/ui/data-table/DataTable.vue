@@ -27,12 +27,22 @@ import DataTableToolbar from './DataTableToolbar.vue';
 import DataTablePagination from './DataTablePagination.vue';
 
 interface Props {
-  columns: ColumnDef<TData, any>[]
-  data: TData[]
-  facets?: Facet[]
+  columns: ColumnDef<TData, any>[];
+  data: TData[];
+  facets?: Facet[];
+  options?: {
+    filter?: boolean;
+    settings?: boolean;
+    actionButton?: string;
+    rowsPerPage?: boolean;
+  }
 };
 
 const props = defineProps<Props>();
+const emit = defineEmits<{
+  (e: 'send-selected-row', row: TData): void;
+  (e: 'action-button-click'): void;
+}>();
 
 const sorting = ref<SortingState>([]);
 const globalFilter = ref<string>('');
@@ -55,13 +65,19 @@ const table = useVueTable({
     get globalFilter() { return globalFilter.value },
     get columnVisibility() { return columnVisibility.value },
   },
+  meta: {
+    sendSelectedRow: (row: TData) => {
+      emit('send-selected-row', row);
+    },
+  },
 });
 </script>
 
 <template>
   <div>
     <div class="space-y-4">
-      <DataTableToolbar :table="table" :facets="facets" />
+      <DataTableToolbar :table="table" :facets="facets" :filter="options?.filter" :settings="options?.settings"
+        :action-button="options?.actionButton" @action-button-click="emit('action-button-click')" />
       <div class="border rounded-md">
         <Table>
           <TableHeader>
@@ -92,7 +108,7 @@ const table = useVueTable({
         </Table>
       </div>
 
-      <DataTablePagination :table="table" />
+      <DataTablePagination :table="table" :rows-per-page="options?.rowsPerPage" />
     </div>
   </div>
 </template>

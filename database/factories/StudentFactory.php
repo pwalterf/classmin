@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Models\Teacher;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -24,6 +25,7 @@ final class StudentFactory extends Factory
             'email' => $this->faker->unique()->safeEmail(),
             'date_of_birth' => $this->faker->date(),
             'phone_number' => $this->faker->optional()->phoneNumber(),
+            'teacher_id' => Teacher::first() ?? Teacher::factory(),
         ];
     }
 }

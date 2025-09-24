@@ -8,7 +8,7 @@ use App\Http\Controllers\Admin\UserStatusController;
 use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'admin', 'middleware' => AdminMiddleware::class], function () {
+Route::middleware([AdminMiddleware::class, 'auth', 'verified'])->prefix('admin')->group(function () {
     Route::get('users/statuses', [UserStatusController::class, 'getStatuses'])->name('users.statuses');
     Route::patch('users/{user}/change-status', [UserStatusController::class, 'changeStatus'])->name('users.changeStatus');
 
