@@ -18,7 +18,6 @@ return new class extends Migration
             $table->id();
             $table->enum('status', AttendanceStatus::values());
             $table->text('notes')->nullable();
-            $table->date('registered_at');
             $table->foreignId('lesson_id')->constrained();
             $table->foreignId('enrollment_id')->constrained();
             $table->timestamps();

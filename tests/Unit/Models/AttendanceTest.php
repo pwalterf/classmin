@@ -13,7 +13,6 @@ test('to array', function () {
         'id',
         'status',
         'notes',
-        'registered_at',
         'lesson_id',
         'enrollment_id',
         'created_at',

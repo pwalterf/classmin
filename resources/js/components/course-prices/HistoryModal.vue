@@ -118,9 +118,8 @@ const deletePrice = () => {
 
       <DialogFooter class="gap-2">
         <DialogClose as-child>
-          <Button variant="secondary" @click="closeModal()"> Cancel </Button>
+          <Button variant="secondary" @click="closeModal()"> Close </Button>
         </DialogClose>
-        <Button type="submit"> Save changes </Button>
       </DialogFooter>
     </DialogContent>
 

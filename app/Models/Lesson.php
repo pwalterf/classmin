@@ -15,6 +15,19 @@ final class Lesson extends Model
     use HasFactory;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
+     */
+    protected $fillable = [
+        'notes',
+        'student_page',
+        'workbook_page',
+        'taught_at',
+        'course_id',
+    ];
+
+    /**
      * Define the relationship with the Course model.
      *
      * @return BelongsTo<Course, $this>

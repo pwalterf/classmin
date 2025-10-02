@@ -24,7 +24,6 @@ final class AttendanceFactory extends Factory
         return [
             'status' => $this->faker->randomElement(AttendanceStatus::cases()),
             'notes' => $this->faker->text(),
-            'registered_at' => $this->faker->date(),
             'lesson_id' => Lesson::factory(),
             'enrollment_id' => Enrollment::factory(),
         ];

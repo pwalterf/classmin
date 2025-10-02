@@ -103,7 +103,7 @@ const closeModal = () => {
           :options="{ settings: false, rowsPerPage: false, actionButton: 'Enroll student' }"
           @action-button-click="fetchStudents" />
 
-        <ListModal v-model:open="showSelectStudentsDialog" :students="students ?? []"
+        <ListModal v-model:open="showSelectStudentsDialog" :all-students="students ?? []"
           :selected-students="form.enrollments?.map((e) => e.student) ?? []" @students-selected="addStudents" />
 
         <DialogFooter class="gap-2">

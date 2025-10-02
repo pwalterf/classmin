@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Http\Resources\Teacher;
 
-use App\Models\Enrollment;
+use App\Models\Lesson;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @mixin Enrollment
+ * @mixin Lesson
  */
-final class EnrollmentResource extends JsonResource
+final class LessonResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -22,12 +22,12 @@ final class EnrollmentResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'status' => $this->status,
-            'enrolled_at' => $this->enrolled_at,
-            'credits' => $this->credits,
-            'discount_pct' => $this->discount_pct,
+            'notes' => $this->notes,
+            'student_page' => $this->student_page ?? '-',
+            'workbook_page' => $this->workbook_page ?? '-',
+            'taught_at' => $this->taught_at,
             'course' => new CourseResource($this->whenLoaded('course')),
-            'student' => new StudentResource($this->whenLoaded('student')),
+            'attendances' => AttendanceResource::collection($this->whenLoaded('attendances')),
         ];
     }
 }

@@ -15,6 +15,18 @@ final class Attendance extends Model
     use HasFactory;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
+     */
+    protected $fillable = [
+        'status',
+        'notes',
+        'enrollment_id',
+        'lesson_id',
+    ];
+
+    /**
      * Get the enrollment associated with the attendance.
      *
      * @return BelongsTo<Enrollment, $this>

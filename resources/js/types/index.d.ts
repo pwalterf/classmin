@@ -71,6 +71,7 @@ export interface Course {
     prices: CoursePrice[];
     lastPrice: CoursePrice;
     students: Student[];
+    lessons: Lesson[];
 };
 
 export interface CoursePrice {
@@ -102,3 +103,21 @@ export interface Enrollment {
     student: Student;
     course?: Course;
 };
+
+export interface Lesson {
+    id: number;
+    notes: string;
+    student_page: string | null;
+    workbook_page: string | null;
+    taught_at: DateValue | string | undefined;
+    course: Course;
+    attendances: Attendance[];
+}
+
+export interface Attendance {
+    id?: number;
+    status: Enum;
+    notes?: string;
+    enrollment?: Enrollment;
+    lesson?: Lesson;
+}

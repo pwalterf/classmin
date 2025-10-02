@@ -1,35 +1,35 @@
 <script setup lang="ts">
-import { Link, router } from '@inertiajs/vue3';
+import { router } from '@inertiajs/vue3';
 import { MoreHorizontal } from 'lucide-vue-next';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Course } from '@/types';
+import { Lesson } from '@/types';
 import { ref } from 'vue';
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '../ui/alert-dialog';
 import { toast } from 'vue-sonner';
-import FormModal from '@/components/courses/FormModal.vue';
-import LessonForm from '@/components/lessons/FormModal.vue';
+import FormModal from './FormModal.vue';
+import AttendancesForm from '@/components/attendances/FormModal.vue';
 
 interface Props {
-  course: Course;
+  lesson: Lesson;
 };
 
 const props = defineProps<Props>();
 
-const showModal = ref(false);
-const showLessonForm = ref(false);
+const openLessonForm = ref(false);
+const openAttendancesForm = ref(false);
 const showDeleteModal = ref(false);
 
 const deleteSubmit = () => {
-  router.delete(route('courses.destroy', props.course), {
+  router.delete(route('lessons.destroy', props.lesson), {
     onSuccess: () => {
-      toast.success('Course deleted successfully', {
-        description: 'The course has been deleted.',
+      toast.success('Lesson deleted successfully', {
+        description: 'The lesson has been deleted.',
       });
     },
     onError: () => {
-      toast.error('Error deleting course', {
-        description: 'There was an error deleting the course.',
+      toast.error('Error deleting lesson', {
+        description: 'There was an error deleting the lesson.',
       });
     },
     onFinish: () => {
@@ -50,34 +50,32 @@ const deleteSubmit = () => {
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end">
       <DropdownMenuLabel>Actions</DropdownMenuLabel>
-      <DropdownMenuItem>
-        <Link :href="route('courses.show', course.id)">Course details</Link>
+      <DropdownMenuItem @select="openLessonForm = true">
+        Edit lesson
       </DropdownMenuItem>
-      <DropdownMenuItem @select="showModal = true">
-        Edit course
-      </DropdownMenuItem>
-      <DropdownMenuItem @select="showLessonForm = true">
-        New lesson
+      <DropdownMenuItem @select="openAttendancesForm = true">
+        Attendances
       </DropdownMenuItem>
       <DropdownMenuSeparator />
       <DropdownMenuItem class="text-red-600" @select="showDeleteModal = true">
-        Delete course
+        Delete lesson
       </DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>
 
-  <FormModal v-model:open="showModal" title="Edit course data"
-    description="Make changes to the course data here. Click save when you're done." :course="course" />
+  <FormModal v-model:open="openLessonForm" title="Edit lesson data"
+    description="Make changes to the lesson data here. Click save when you're done." :lesson="lesson"
+    :course="lesson.course" />
 
-  <LessonForm v-model:open="showLessonForm" title="New lesson" description="Create a new lesson for this course."
-    :course="course" />
+  <AttendancesForm v-model:open="openAttendancesForm" title="Manage Attendances"
+    description="Manage the attendances for this lesson." :attendances="lesson.attendances" />
 
   <AlertDialog v-model:open="showDeleteModal">
     <AlertDialogContent>
       <AlertDialogHeader>
         <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
         <AlertDialogDescription>
-          This action cannot be undone. This course will no longer be
+          This action cannot be undone. This lesson will no longer be
           accessible by you or others you've shared it with.
         </AlertDialogDescription>
       </AlertDialogHeader>

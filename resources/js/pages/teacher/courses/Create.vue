@@ -22,7 +22,7 @@ import { computed, ref } from 'vue';
 import { toast } from 'vue-sonner';
 
 interface Props {
-  statuses: Enum[];
+  courseStatuses: Enum[];
   students?: Student[];
 };
 
@@ -219,7 +219,7 @@ const submitForm = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectItem v-for="status in statuses" :key="status.value" :value="status.value">
+                      <SelectItem v-for="status in courseStatuses" :key="status.value" :value="status.value">
                         {{ status.label }}
                       </SelectItem>
                     </SelectGroup>
@@ -285,8 +285,8 @@ const submitForm = () => {
                 </TableBody>
               </Table>
 
-              <EnrollmentSelection :all-students="students ?? []" :selected-students="studentsEnrolled"
-                @enrollment-saved="addEnrollment" />
+              <EnrollmentSelection v-model:open="openSelectStudents" :all-students="students ?? []"
+                :selected-students="studentsEnrolled" @enrollment-saved="addEnrollment" />
             </template>
 
             <div class="flex items-center justify-between mt-4">

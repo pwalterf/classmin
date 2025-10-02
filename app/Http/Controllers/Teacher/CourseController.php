@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Teacher;
 
 use App\Actions\Teacher\CreateCourse;
 use App\Actions\Teacher\UpdateCourse;
+use App\Enums\AttendanceStatus;
 use App\Enums\CourseStatus;
 use App\Enums\EnrollmentStatus;
 use App\Http\Controllers\Controller;
@@ -37,7 +38,7 @@ final class CourseController extends Controller
                 ->where('teacher_id', auth()->user()->teacher->id)
                 ->with(['enrollments.student', 'prices'])
                 ->get()),
-            'statuses' => fn (): array => CourseStatus::cases(),
+            'courseStatuses' => fn (): array => CourseStatus::cases(),
             'enrollmentStatuses' => fn (): array => EnrollmentStatus::cases(),
             'students' => Inertia::optional(fn () => StudentResource::collection(Student::byCurrentTeacher()->get())),
         ]);
@@ -51,7 +52,7 @@ final class CourseController extends Controller
         Gate::authorize('create', Course::class);
 
         return Inertia::render('teacher/courses/Create', [
-            'statuses' => fn (): array => CourseStatus::cases(),
+            'courseStatuses' => fn (): array => CourseStatus::cases(),
             'enrollmentStatuses' => fn (): array => EnrollmentStatus::cases(),
             'students' => Inertia::optional(fn () => StudentResource::collection(Student::byCurrentTeacher()->get())),
         ]);
@@ -91,9 +92,10 @@ final class CourseController extends Controller
         Gate::authorize('view', $course);
 
         return Inertia::render('teacher/courses/Show', [
-            'course' => fn (): CourseResource => new CourseResource($course->load(['lastPrice', 'enrollments.student', 'prices'])),
+            'course' => fn (): CourseResource => new CourseResource($course->load(['lastPrice', 'enrollments.student', 'prices', 'lessons' => ['course', 'attendances.enrollment.student']])),
             'courseStatuses' => fn (): array => CourseStatus::cases(),
             'enrollmentStatuses' => fn (): array => EnrollmentStatus::cases(),
+            'attendanceStatuses' => fn (): array => AttendanceStatus::cases(),
             'students' => Inertia::optional(fn () => StudentResource::collection(Student::byCurrentTeacher()->get())),
         ]);
     }

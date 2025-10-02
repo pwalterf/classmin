@@ -20,8 +20,8 @@ export const columns: ColumnDef<Enrollment>[] = [
   },
   {
     accessorKey: 'student.email',
-    header: ({ column }) => h(DataTableColumnHeader, { column: column as any, title: 'Email' }),
-    cell: ({ row }) => h('div', row.getValue('student_email')),
+    header: ({ column }) => h(DataTableColumnHeader, { column: column as any, title: 'Email', class: 'hidden lg:table-cell' }),
+    cell: ({ row }) => h('div', { class: 'hidden lg:table-cell' }, row.getValue('student_email')),
     enableHiding: false,
   },
   {

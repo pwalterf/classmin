@@ -39,7 +39,7 @@ interface CourseForm {
 const props = defineProps<Props>();
 const emit = defineEmits(['update:open']);
 
-const courseStatuses = computed(() => (usePage().props.statuses as Enum[]));
+const courseStatuses = computed(() => (usePage().props.courseStatuses as Enum[]));
 
 const form = useForm<CourseForm>({
   title: props.course?.title || '',

@@ -48,7 +48,7 @@ final class Course extends Model
      */
     public function prices(): HasMany
     {
-        return $this->hasMany(CoursePrice::class);
+        return $this->hasMany(CoursePrice::class)->orderBy('started_at', 'desc');
     }
 
     /**
@@ -68,7 +68,7 @@ final class Course extends Model
      */
     public function lessons(): HasMany
     {
-        return $this->hasMany(Lesson::class);
+        return $this->hasMany(Lesson::class)->orderBy('taught_at', 'desc');
     }
 
     /**

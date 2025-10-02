@@ -53,7 +53,8 @@ const form = useForm<StudentForm>({
 const submitForm = () => {
   if (props.student) {
     form.patch(route('students.update', props.student), {
-      preserveState: 'errors',
+      preserveState: true,
+      preserveScroll: true,
       onSuccess: () => {
         closeModal();
         toast.success('Student updated successfully', {
@@ -68,7 +69,8 @@ const submitForm = () => {
     });
   } else {
     form.post(route('students.store'), {
-      preserveState: 'errors',
+      preserveState: true,
+      preserveScroll: true,
       onSuccess: () => {
         closeModal();
         toast.success('Student created successfully', {

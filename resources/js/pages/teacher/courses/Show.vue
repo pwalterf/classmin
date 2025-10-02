@@ -12,10 +12,13 @@ import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescript
 import { toast } from 'vue-sonner';
 import { useDateFormatter } from '@/composables/useDateFormatter';
 import DataTable from '@/components/ui/data-table/DataTable.vue';
-import { columns } from '@/components/enrollments/columns';
+import { columns as enrollmentColumns } from '@/components/enrollments/columns';
+import { columns as lessonColumns } from '@/components/lessons/columns';
 import EnrollmentSelection from '@/components/enrollments/EnrollmentSelection.vue';
 import CoursePriceForm from '@/components/course-prices/FormModal.vue';
 import HistoryModal from '@/components/course-prices/HistoryModal.vue';
+import CourseForm from '@/components/courses/FormModal.vue';
+import LessonForm from '@/components/lessons/FormModal.vue';
 
 interface Props {
   course: Course;
@@ -35,6 +38,7 @@ const openNewPrice = ref(false);
 const openCurrentPrice = ref(false);
 const openPriceHistory = ref(false);
 const openSelectStudents = ref(false);
+const openNewLesson = ref(false);
 const studentsEnrolled = computed(() => props.course.enrollments.map((enrollment) => enrollment.student));
 
 const facets: Facet[] = [
@@ -95,7 +99,7 @@ const deleteCourse = () => {
     <div class="flex h-full flex-1 flex-col rounded-xl p-4 overflow-x-auto">
       <Heading title="Course details" description="This is the course details page."></Heading>
       <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card class="lg:col-span-3">
+        <Card class="col-span-4 lg:col-span-3">
           <CardHeader class="flex justify-between">
             <CardTitle>Course details</CardTitle>
             <DropdownMenu>
@@ -142,6 +146,9 @@ const deleteCourse = () => {
             </div>
           </CardContent>
 
+          <CourseForm v-model:open="openCourse" title="Edit Course" description="Edit the course details"
+            :course="course" />
+
           <AlertDialog v-model:open="openDeleteCourse">
             <AlertDialogContent>
               <AlertDialogHeader>
@@ -161,7 +168,7 @@ const deleteCourse = () => {
           </AlertDialog>
         </Card>
 
-        <Card>
+        <Card class="col-span-4 lg:col-span-1">
           <CardHeader class="flex justify-between">
             <CardTitle>Current price</CardTitle>
             <DropdownMenu>
@@ -215,12 +222,26 @@ const deleteCourse = () => {
             <CardTitle>Students enrolled</CardTitle>
           </CardHeader>
           <CardContent>
-            <DataTable :columns="columns" :data="course.enrollments ?? []" :facets="facets"
+            <DataTable :columns="enrollmentColumns" :data="course.enrollments ?? []" :facets="facets"
               :options="{ settings: false, rowsPerPage: false, actionButton: 'Enroll student' }"
               @action-button-click="fetchStudents" />
 
             <EnrollmentSelection v-model:open="openSelectStudents" :all-students="students ?? []"
-              :selected-students="studentsEnrolled" :course="props.course" />
+              :selected-students="studentsEnrolled" :course="course" />
+          </CardContent>
+        </Card>
+
+        <Card class="col-span-4">
+          <CardHeader>
+            <CardTitle>Lessons</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <DataTable :columns="lessonColumns" :data="course.lessons ?? []"
+              :options="{ settings: false, rowsPerPage: false, actionButton: 'New lesson' }"
+              @action-button-click="openNewLesson = true" />
+
+            <LessonForm v-model:open="openNewLesson" title="New Lesson"
+              description="Create a new lesson for this course" :course="course" />
           </CardContent>
         </Card>
       </div>

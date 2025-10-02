@@ -33,6 +33,7 @@ final class CourseResource extends JsonResource
             'prices' => CoursePriceResource::collection($this->whenLoaded('prices')),
             'lastPrice' => new CoursePriceResource($this->whenLoaded('lastPrice')),
             'students' => StudentResource::collection($this->whenLoaded('students')),
+            'lessons' => LessonResource::collection($this->whenLoaded('lessons')),
         ];
     }
 }
