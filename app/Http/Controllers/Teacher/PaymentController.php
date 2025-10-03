@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Teacher;
 
 use App\Actions\Teacher\CreatePayment;
+use App\Actions\Teacher\DeletePayment;
 use App\Actions\Teacher\UpdatePayment;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Teacher\PaymentStoreRequest;
@@ -74,8 +75,12 @@ final class PaymentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id): void
+    public function destroy(Payment $payment, DeletePayment $deletePayment): RedirectResponse
     {
-        //
+        Gate::authorize('delete', $payment);
+
+        $deletePayment->handle($payment);
+
+        return back();
     }
 }
