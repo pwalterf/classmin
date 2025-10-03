@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Attendance, Course, Enrollment, Enum, Lesson } from '@/types';
+import { Course, Enrollment, Enum, Lesson } from '@/types';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';

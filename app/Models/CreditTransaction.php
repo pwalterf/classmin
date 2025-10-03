@@ -15,6 +15,21 @@ final class CreditTransaction extends Model
     use HasFactory;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
+     */
+    protected $fillable = [
+        'transacted_at',
+        'type',
+        'credits',
+        'balance',
+        'description',
+        'enrollment_id',
+        'payment_id',
+    ];
+
+    /**
      * Get the enrollment associated with the credit transaction.
      *
      * @return BelongsTo<Enrollment, $this>

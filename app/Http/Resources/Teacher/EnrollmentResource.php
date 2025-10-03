@@ -28,6 +28,7 @@ final class EnrollmentResource extends JsonResource
             'discount_pct' => $this->discount_pct,
             'course' => new CourseResource($this->whenLoaded('course')),
             'student' => new StudentResource($this->whenLoaded('student')),
+            'payments' => PaymentResource::collection($this->whenLoaded('payments')),
         ];
     }
 }

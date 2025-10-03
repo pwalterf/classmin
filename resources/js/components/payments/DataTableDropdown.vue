@@ -3,38 +3,35 @@ import { router } from '@inertiajs/vue3';
 import { MoreHorizontal } from 'lucide-vue-next';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Enrollment } from '@/types';
+import { Payment } from '@/types';
 import { ref } from 'vue';
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '../ui/alert-dialog';
 import { toast } from 'vue-sonner';
-import FormModal from './FormModal.vue';
-import HistoryModal from '../payments/enrollment/HistoryModal.vue';
+import FormModal from '@/components/payments/FormModal.vue';
 
 interface Props {
-  enrollment: Enrollment;
+  payment: Payment;
 };
 
 const props = defineProps<Props>();
 
-const openEnrollmentForm = ref(false);
-const openPayments = ref(false);
-const openCredits = ref(false);
-const openDeleteEnrollment = ref(false);
+const openPaymentForm = ref(false);
+const showDeleteModal = ref(false);
 
 const deleteSubmit = () => {
-  router.delete(route('enrollments.destroy', props.enrollment), {
+  router.delete(route('payments.destroy', props.payment), {
     onSuccess: () => {
-      toast.success('Enrollment deleted successfully', {
-        description: 'The enrollment has been deleted.',
+      toast.success('Payment deleted successfully', {
+        description: 'The payment has been deleted.',
       });
     },
     onError: () => {
-      toast.error('Error deleting enrollment', {
-        description: 'There was an error deleting the enrollment.',
+      toast.error('Error deleting payment', {
+        description: 'There was an error deleting the payment.',
       });
     },
     onFinish: () => {
-      openDeleteEnrollment.value = false;
+      showDeleteModal.value = false;
     },
   });
 };
@@ -51,35 +48,26 @@ const deleteSubmit = () => {
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end">
       <DropdownMenuLabel>Actions</DropdownMenuLabel>
-      <DropdownMenuItem @select="openEnrollmentForm = true">
-        Edit enrollment
-      </DropdownMenuItem>
-      <DropdownMenuItem @select="openPayments = true">
-        Payments
-      </DropdownMenuItem>
-      <DropdownMenuItem @select="openCredits = true">
-        Credits history
+      <DropdownMenuItem @select="openPaymentForm = true">
+        Edit payment
       </DropdownMenuItem>
       <DropdownMenuSeparator />
-      <DropdownMenuItem class="text-red-600" @select="openDeleteEnrollment = true">
-        Delete enrollment
+      <DropdownMenuItem class="text-red-600" @select="showDeleteModal = true">
+        Delete payment
       </DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>
 
-  <FormModal v-model:open="openEnrollmentForm" title="Edit enrollment data"
-    description="Make changes to the enrollment data here. Click save when you're done." :enrollment="enrollment"
-    :student="enrollment.student" />
+  <FormModal v-model:open="openPaymentForm" title="Edit Payment"
+    description="Edit payment for {{ payment.enrollment.student.full_name }}" :payment="payment"
+    :enrollment="payment.enrollment" />
 
-  <HistoryModal v-model:open="openPayments" title="Payment History"
-    description="View the payment history for this enrollment" :enrollment="enrollment" />
-
-  <AlertDialog v-model:open="openDeleteEnrollment">
+  <AlertDialog v-model:open="showDeleteModal">
     <AlertDialogContent>
       <AlertDialogHeader>
         <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
         <AlertDialogDescription>
-          This action cannot be undone. This enrollment will no longer be
+          This action cannot be undone. This payment will no longer be
           accessible by you or others you've shared it with.
         </AlertDialogDescription>
       </AlertDialogHeader>

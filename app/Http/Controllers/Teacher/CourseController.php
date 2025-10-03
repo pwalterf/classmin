@@ -92,7 +92,11 @@ final class CourseController extends Controller
         Gate::authorize('view', $course);
 
         return Inertia::render('teacher/courses/Show', [
-            'course' => fn (): CourseResource => new CourseResource($course->load(['lastPrice', 'enrollments.student', 'prices', 'lessons' => ['course', 'attendances.enrollment.student']])),
+            'course' => fn (): CourseResource => new CourseResource($course->load([
+                'lastPrice',
+                'enrollments' => ['student', 'payments.enrollment'],
+                'prices',
+                'lessons' => ['course', 'attendances.enrollment.student']])),
             'courseStatuses' => fn (): array => CourseStatus::cases(),
             'enrollmentStatuses' => fn (): array => EnrollmentStatus::cases(),
             'attendanceStatuses' => fn (): array => AttendanceStatus::cases(),

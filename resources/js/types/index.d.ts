@@ -102,6 +102,7 @@ export interface Enrollment {
     discount_pct: number | undefined;
     student: Student;
     course?: Course;
+    payments?: Payment[];
 };
 
 export interface Lesson {
@@ -121,3 +122,13 @@ export interface Attendance {
     enrollment?: Enrollment;
     lesson?: Lesson;
 }
+
+export interface Payment {
+    id: number;
+    amount: number;
+    currency: string;
+    credits_purchased: number;
+    paid_at: DateValue | string | undefined;
+    comments?: string;
+    enrollment: Enrollment;
+};

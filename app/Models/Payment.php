@@ -15,6 +15,20 @@ final class Payment extends Model
     use HasFactory;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
+     */
+    protected $fillable = [
+        'amount',
+        'currency',
+        'credits_purchased',
+        'paid_at',
+        'comments',
+        'enrollment_id',
+    ];
+
+    /**
      * Get the enrollment associated with the payment.
      *
      * @return BelongsTo<Enrollment, $this>
