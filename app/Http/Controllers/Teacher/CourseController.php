@@ -40,6 +40,7 @@ final class CourseController extends Controller
                 ->get()),
             'courseStatuses' => fn (): array => CourseStatus::cases(),
             'enrollmentStatuses' => fn (): array => EnrollmentStatus::cases(),
+            'attendanceStatuses' => fn (): array => AttendanceStatus::cases(),
             'students' => Inertia::optional(fn () => StudentResource::collection(Student::byCurrentTeacher()->get())),
         ]);
     }

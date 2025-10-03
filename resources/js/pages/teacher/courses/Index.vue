@@ -11,7 +11,7 @@ import { ref } from 'vue';
 
 interface Props {
   courses: Course[];
-  statuses: Enum[];
+  courseStatuses: Enum[];
   students?: Student[];
 }
 
@@ -22,7 +22,7 @@ const facets: Facet[] = [
   {
     value: 'status',
     label: 'Status',
-    options: props.statuses,
+    options: props.courseStatuses,
   }
 ];
 
