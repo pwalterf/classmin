@@ -26,9 +26,3 @@ test('belongs to enrollment', function () {
 
     expect($payment->enrollment)->toBeInstanceOf(Enrollment::class);
 });
-
-test('has many credit transactions', function () {
-    $payment = Payment::factory()->hasCreditTransactions(3)->create();
-
-    expect($payment->creditTransactions)->toHaveCount(3);
-});

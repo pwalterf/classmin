@@ -6,7 +6,6 @@ namespace Database\Factories;
 
 use App\Enums\CreditTransactionType;
 use App\Models\Enrollment;
-use App\Models\Payment;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -28,7 +27,6 @@ final class CreditTransactionFactory extends Factory
             'balance' => $this->faker->numberBetween(0, 20),
             'description' => $this->faker->optional()->sentence(),
             'enrollment_id' => Enrollment::factory(),
-            'payment_id' => Payment::factory(),
         ];
     }
 }

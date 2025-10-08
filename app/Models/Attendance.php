@@ -49,7 +49,7 @@ final class Attendance extends Model
     /**
      * Get the attributes that should be cast.
      *
-     * @return array<string, string>
+     * @return array{registered_at: 'date', status: 'App\\Enums\\AttendanceStatus'}
      */
     protected function casts(): array
     {

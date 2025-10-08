@@ -24,7 +24,7 @@ export const columns: ColumnDef<Payment>[] = [
   {
     id: 'credits purchased',
     accessorKey: 'credits_purchased',
-    header: ({ column }) => h(DataTableColumnHeader, { column: column as any, title: 'Credits' }),
+    header: 'Credits',
     cell: ({ row }) => h('div', row.getValue('credits purchased')),
   },
   {

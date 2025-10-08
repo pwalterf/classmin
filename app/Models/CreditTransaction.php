@@ -26,7 +26,6 @@ final class CreditTransaction extends Model
         'balance',
         'description',
         'enrollment_id',
-        'payment_id',
     ];
 
     /**
@@ -37,16 +36,6 @@ final class CreditTransaction extends Model
     public function enrollment(): BelongsTo
     {
         return $this->belongsTo(Enrollment::class);
-    }
-
-    /**
-     * Get the payment associated with the credit transaction.
-     *
-     * @return BelongsTo<Payment, $this>
-     */
-    public function payment(): BelongsTo
-    {
-        return $this->belongsTo(Payment::class);
     }
 
     protected function casts(): array

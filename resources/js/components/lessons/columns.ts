@@ -17,20 +17,20 @@ export const columns: ColumnDef<Lesson>[] = [
   },
   {
     accessorKey: 'notes',
-    header: ({ column }) => h(DataTableColumnHeader, { column: column as any, title: 'Notes' }),
+    header: 'Notes',
     cell: ({ row }) => h('div', row.getValue('notes')),
     enableHiding: false,
   },
   {
     id: 'student page',
     accessorKey: 'student_page',
-    header: ({ column }) => h(DataTableColumnHeader, { column: column as any, title: 'Student Page' }),
+    header: 'Student Page',
     cell: ({ row }) => h('div', row.getValue('student page')),
   },
   {
     id: 'workbook page',
     accessorKey: 'workbook_page',
-    header: ({ column }) => h(DataTableColumnHeader, { column: column as any, title: 'Workbook Page' }),
+    header: 'Workbook Page',
     cell: ({ row }) => h('div', row.getValue('workbook page')),
   },
   {

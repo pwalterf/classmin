@@ -20,7 +20,7 @@ export const columns: ColumnDef<Student>[] = [
   {
     id: 'phone number',
     accessorKey: 'phone_number',
-    header: ({ column }) => h(DataTableColumnHeader, { column: column as any, title: 'Phone number' }),
+    header: 'Phone',
     cell: ({ row }) => h('div', row.getValue('phone number')),
     enableHiding: true,
   },
