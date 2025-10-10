@@ -16,13 +16,15 @@ test('to array', function () {
         'balance',
         'description',
         'enrollment_id',
+        'transactable_type',
+        'transactable_id',
         'created_at',
         'updated_at',
     ]);
 });
 
-test('belongs to an enrollment', function () {
-    $creditTransaction = CreditTransaction::factory()->create();
+test('belongs to enrollment', function () {
+    $creditTransaction = CreditTransaction::factory()->create()->refresh();
 
     expect($creditTransaction->enrollment)->toBeInstanceOf(Enrollment::class);
 });

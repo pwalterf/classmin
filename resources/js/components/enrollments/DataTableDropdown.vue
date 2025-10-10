@@ -8,7 +8,8 @@ import { ref } from 'vue';
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '../ui/alert-dialog';
 import { toast } from 'vue-sonner';
 import FormModal from './FormModal.vue';
-import HistoryModal from '../payments/enrollment/HistoryModal.vue';
+import PaymentHistory from '../payments/enrollment/HistoryModal.vue';
+import CreditHistory from '../credit-transactions/enrollment/HistoryModal.vue';
 
 interface Props {
   enrollment: Enrollment;
@@ -71,8 +72,11 @@ const deleteSubmit = () => {
     description="Make changes to the enrollment data here. Click save when you're done." :enrollment="enrollment"
     :student="enrollment.student" />
 
-  <HistoryModal v-model:open="openPayments" title="Payment History"
+  <PaymentHistory v-model:open="openPayments" title="Payment History"
     description="View the payment history for this enrollment" :enrollment="enrollment" />
+
+  <CreditHistory v-model:open="openCredits" title="Credit History"
+    description="View the credit history for this enrollment" :enrollment="enrollment" />
 
   <AlertDialog v-model:open="openDeleteEnrollment">
     <AlertDialogContent>

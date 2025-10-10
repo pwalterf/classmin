@@ -22,6 +22,7 @@ return new class extends Migration
             $table->tinyInteger('balance');
             $table->string('description')->nullable();
             $table->foreignId('enrollment_id')->constrained();
+            $table->nullableMorphs('transactable');
             $table->timestamps();
         });
     }

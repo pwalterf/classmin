@@ -39,8 +39,12 @@ final readonly class CreateAttendance
                     'transacted_at' => $attendance->lesson->taught_at,
                     'type' => CreditTransactionType::USE,
                     'credits' => -1,
+                    'description' => 'Attendance ID: '.$attendance->id,
                     'enrollment_id' => $attendance->enrollment_id,
+                    'transactable_type' => Attendance::class,
+                    'transactable_id' => $attendance->id,
                 ]);
+
                 $this->createCreditTransaction->handle($creditTransaction);
             }
 

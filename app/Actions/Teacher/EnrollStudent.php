@@ -41,6 +41,7 @@ final readonly class EnrollStudent
                     'transacted_at' => $enrollment->enrolled_at,
                     'type' => CreditTransactionType::ADJUSTMENT,
                     'credits' => $enrollment->credits,
+                    'description' => 'Initial adjustment',
                     'enrollment_id' => $enrollment->id,
                 ]);
                 $this->createCreditTransaction->handle($creditTransaction);

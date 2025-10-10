@@ -16,7 +16,7 @@ test('credit transaction type values', function () {
 });
 
 test('credit transaction type labels', function () {
-    expect(CreditTransactionType::PURCHASE->label())->toBe('Compra');
+    expect(CreditTransactionType::PURCHASE->label())->toBe('Pago');
     expect(CreditTransactionType::USE->label())->toBe('Uso');
     expect(CreditTransactionType::ADJUSTMENT->label())->toBe('Ajuste');
     expect(CreditTransactionType::REFUND->label())->toBe('Reembolso');

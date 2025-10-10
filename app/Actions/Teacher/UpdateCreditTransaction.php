@@ -13,7 +13,7 @@ final readonly class UpdateCreditTransaction
      * UpdateCreditTransaction constructor.
      */
     public function __construct(
-        private CalculateCreditBalance $calculateCreditBalance,
+        private UpdateNewerTransactions $updateNewerTransactions,
         private UpdateEnrollmentCredits $updateEnrollmentCredits,
     ) {}
 
@@ -22,25 +22,24 @@ final readonly class UpdateCreditTransaction
      */
     public function handle(CreditTransaction $originalTransaction, CreditTransaction $updatedTransaction): CreditTransaction
     {
-        return DB::transaction(function () use ($originalTransaction, $updatedTransaction) {
-            if (! $originalTransaction->id) {
-                $originalTransaction = CreditTransaction::query()
-                    ->where('enrollment_id', $originalTransaction->enrollment_id)
-                    ->where('transacted_at', $originalTransaction->transacted_at)
-                    ->where('type', $originalTransaction->type)
-                    ->firstOrFail();
-            }
-
+        return DB::transaction(function () use ($originalTransaction, $updatedTransaction): CreditTransaction {
             $originalTransaction->fill([
                 'transacted_at' => $updatedTransaction->transacted_at,
                 'type' => $updatedTransaction->type,
                 'credits' => $updatedTransaction->credits,
-                'balance' => $this->calculateCreditBalance->handle($updatedTransaction),
+                'description' => $updatedTransaction->balance,
             ]);
 
             if ($originalTransaction->isDirty()) {
-                if ($originalTransaction->isDirty('balance')) {
-                    $this->updateEnrollmentCredits->handle($originalTransaction->enrollment, $originalTransaction->balance - $originalTransaction->getOriginal('balance'));
+                if ($originalTransaction->isDirty('credits')) {
+                    $creditsDiff = $updatedTransaction->credits - $originalTransaction->getOriginal('credits');
+
+                    $originalTransaction->fill([
+                        'balance' => $originalTransaction->balance + $creditsDiff,
+                    ]);
+
+                    $this->updateNewerTransactions->handle($originalTransaction, $creditsDiff);
+                    $this->updateEnrollmentCredits->handle($originalTransaction->enrollment, $creditsDiff);
                 }
                 $originalTransaction->save();
             }

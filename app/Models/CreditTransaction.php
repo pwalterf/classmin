@@ -8,6 +8,7 @@ use App\Enums\CreditTransactionType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 final class CreditTransaction extends Model
 {
@@ -26,16 +27,28 @@ final class CreditTransaction extends Model
         'balance',
         'description',
         'enrollment_id',
+        'transactable_type',
+        'transactable_id',
     ];
 
     /**
-     * Get the enrollment associated with the credit transaction.
+     * Get the enrollment that owns the credit transaction.
      *
      * @return BelongsTo<Enrollment, $this>
      */
     public function enrollment(): BelongsTo
     {
         return $this->belongsTo(Enrollment::class);
+    }
+
+    /**
+     * Get the parent transactable model.
+     *
+     * @return MorphTo<Model, $this>
+     */
+    public function transactable(): MorphTo
+    {
+        return $this->morphTo();
     }
 
     protected function casts(): array

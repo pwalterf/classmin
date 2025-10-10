@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Actions\Teacher;
 
-use App\Enums\CreditTransactionType;
-use App\Models\CreditTransaction;
 use App\Models\Payment;
 use Illuminate\Support\Facades\DB;
 
@@ -30,19 +28,12 @@ final readonly class UpdatePayment
 
             if ($payment->isDirty()) {
                 if ($payment->isDirty('credits_purchased') || $payment->isDirty('paid_at')) {
-                    $originalTransaction = new CreditTransaction([
-                        'transacted_at' => $payment->getOriginal('paid_at'),
-                        'type' => CreditTransactionType::PURCHASE,
-                        'credits' => $payment->getOriginal('credits_purchased'),
-                        'enrollment_id' => $payment->enrollment_id,
-                    ]);
-                    $updatedTransaction = new CreditTransaction([
+                    $updatedTransaction = $payment->creditTransaction->replicate();
+                    $updatedTransaction->fill([
                         'transacted_at' => $payment->paid_at,
-                        'type' => CreditTransactionType::PURCHASE,
                         'credits' => $payment->credits_purchased,
-                        'enrollment_id' => $payment->enrollment_id,
                     ]);
-                    $this->updateCreditTransaction->handle($originalTransaction, $updatedTransaction);
+                    $this->updateCreditTransaction->handle($payment->creditTransaction, $updatedTransaction);
                 }
 
                 $payment->save();

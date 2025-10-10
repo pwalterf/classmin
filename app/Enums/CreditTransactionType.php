@@ -29,7 +29,7 @@ enum CreditTransactionType: string implements JsonSerializable
     public function label(): string
     {
         return match ($this) {
-            self::PURCHASE => 'Compra',
+            self::PURCHASE => 'Pago',
             self::USE => 'Uso',
             self::ADJUSTMENT => 'Ajuste',
             self::REFUND => 'Reembolso',

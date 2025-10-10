@@ -103,6 +103,7 @@ export interface Enrollment {
     student: Student;
     course?: Course;
     payments?: Payment[];
+    creditTransactions?: CreditTransaction[];
 };
 
 export interface Lesson {
@@ -131,4 +132,15 @@ export interface Payment {
     paid_at: DateValue | string | undefined;
     comments?: string;
     enrollment: Enrollment;
+};
+
+export interface CreditTransaction {
+    id: number;
+    transacted_at: DateValue | string | undefined;
+    type: Enum;
+    credits: number;
+    balance: number;
+    description?: string;
+    enrollment: Enrollment;
+    transactable?: Payment | Attendance;
 };

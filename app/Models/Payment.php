@@ -7,6 +7,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 final class Payment extends Model
 {
@@ -35,6 +36,16 @@ final class Payment extends Model
     public function enrollment(): BelongsTo
     {
         return $this->belongsTo(Enrollment::class);
+    }
+
+    /**
+     * Get the payment credit transaction.
+     *
+     * @return MorphOne<CreditTransaction, $this>
+     */
+    public function creditTransaction(): MorphOne
+    {
+        return $this->morphOne(CreditTransaction::class, 'transactable');
     }
 
     /**

@@ -27,7 +27,6 @@ interface EnrollmentForm {
 const props = defineProps<Props>();
 const emit = defineEmits(['update:open']);
 
-const enrollmentStatuses = computed(() => (usePage().props.status as Enum[]));
 const students = computed(() => (usePage().props.students as Student[]));
 const loading = ref(false);
 const showSelectStudentsDialog = ref(false);
@@ -56,10 +55,6 @@ const addStudents = (selectedStudents: Student[]) => {
     discount_pct: 0,
   }));
   form.enrollments = [...selected];
-};
-
-const removeStudentFromCourse = (student: Student) => {
-  form.enrollments = form.enrollments.filter((enrollment) => enrollment.student.id !== student.id);
 };
 
 const form = useForm<EnrollmentForm>({

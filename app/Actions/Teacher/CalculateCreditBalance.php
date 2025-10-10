@@ -17,7 +17,7 @@ final readonly class CalculateCreditBalance
         return DB::transaction(function () use ($creditTransaction): int {
             $lastTransaction = CreditTransaction::query()
                 ->where('enrollment_id', $creditTransaction->enrollment_id)
-                ->where('transacted_at', '<', $creditTransaction->transacted_at)
+                ->where('transacted_at', '<=', $creditTransaction->transacted_at)
                 ->orderByDesc('transacted_at')
                 ->orderByDesc('id')
                 ->first();

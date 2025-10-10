@@ -15,7 +15,7 @@ final readonly class CreateCreditTransaction
      */
     public function __construct(
         private CalculateCreditBalance $calculateCreditBalance,
-        private UpdateCreditTransaction $updateCreditTransaction,
+        private UpdateNewerTransactions $updateNewerTransactions,
         private UpdateEnrollmentCredits $updateEnrollmentCredits,
     ) {}
 
@@ -32,20 +32,14 @@ final readonly class CreateCreditTransaction
                 'type' => $creditTransaction->type,
                 'credits' => $creditTransaction->credits,
                 'balance' => $this->calculateCreditBalance->handle($creditTransaction),
+                'description' => $creditTransaction->description ?? null,
                 'enrollment_id' => $creditTransaction->enrollment_id,
+                'transactable_type' => $creditTransaction->transactable_type ?? null,
+                'transactable_id' => $creditTransaction->transactable_id ?? null,
             ]);
 
-            $newerTransactions = CreditTransaction::query()
-                ->where('enrollment_id', $creditTransaction->enrollment_id)
-                ->where('transacted_at', '>', $creditTransaction->transacted_at)
-                ->orderBy('transacted_at')
-                ->orderBy('id')
-                ->get();
-
-            foreach ($newerTransactions as $transaction) {
-                $this->updateCreditTransaction->handle($transaction, $transaction);
-            }
-
+            // check and update newer transactions
+            $this->updateNewerTransactions->handle($creditTransaction, $creditTransaction->credits);
             $this->updateEnrollmentCredits->handle($enrollment, $creditTransaction->credits);
 
             return $creditTransaction;

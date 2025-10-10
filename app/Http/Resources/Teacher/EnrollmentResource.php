@@ -29,6 +29,7 @@ final class EnrollmentResource extends JsonResource
             'course' => new CourseResource($this->whenLoaded('course')),
             'student' => new StudentResource($this->whenLoaded('student')),
             'payments' => PaymentResource::collection($this->whenLoaded('payments')),
+            'creditTransactions' => CreditTransactionResource::collection($this->whenLoaded('creditTransactions')),
         ];
     }
 }

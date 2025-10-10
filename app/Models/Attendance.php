@@ -8,6 +8,7 @@ use App\Enums\AttendanceStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 final class Attendance extends Model
 {
@@ -44,6 +45,16 @@ final class Attendance extends Model
     public function lesson(): BelongsTo
     {
         return $this->belongsTo(Lesson::class);
+    }
+
+    /**
+     * Get the attendance credit transaction.
+     *
+     * @return MorphOne<CreditTransaction, $this>
+     */
+    public function creditTransaction(): MorphOne
+    {
+        return $this->morphOne(CreditTransaction::class, 'transactable');
     }
 
     /**

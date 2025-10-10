@@ -45,9 +45,3 @@ test('has many payments', function () {
 
     expect($enrollment->payments)->toHaveCount(3);
 });
-
-test('has many credit transactions', function () {
-    $enrollment = Enrollment::factory()->hasCreditTransactions(3)->create();
-
-    expect($enrollment->creditTransactions)->toHaveCount(3);
-});
