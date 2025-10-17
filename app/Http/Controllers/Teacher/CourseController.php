@@ -95,9 +95,9 @@ final class CourseController extends Controller
         return Inertia::render('teacher/courses/Show', [
             'course' => fn (): CourseResource => new CourseResource($course->load([
                 'lastPrice',
-                'enrollments' => ['student', 'payments.enrollment', 'creditTransactions'],
+                'enrollments' => ['student', 'payments', 'creditTransactions'],
                 'prices',
-                'lessons' => ['course', 'attendances.enrollment.student']])),
+                'lessons' => ['attendances.enrollment.student']])),
             'courseStatuses' => fn (): array => CourseStatus::cases(),
             'enrollmentStatuses' => fn (): array => EnrollmentStatus::cases(),
             'attendanceStatuses' => fn (): array => AttendanceStatus::cases(),

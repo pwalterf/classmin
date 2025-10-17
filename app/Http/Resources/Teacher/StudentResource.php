@@ -30,8 +30,9 @@ final class StudentResource extends JsonResource
             'full_name' => $this->full_name,
             'email' => $this->email,
             'date_of_birth' => $this->date_of_birth,
-            'phone_number' => $this->phone_number,
+            'phone_number' => $this->phone_number ?? '-',
             'teacher' => new TeacherResource($this->whenLoaded('teacher')),
+            'enrollments' => EnrollmentResource::collection($this->whenLoaded('enrollments')),
             'created_at' => $this->created_at,
         ];
     }

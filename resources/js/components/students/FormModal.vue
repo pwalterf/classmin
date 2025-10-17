@@ -123,30 +123,32 @@ const closeModal = () => {
           <InputError :message="form.errors.email" />
         </div>
 
-        <div class="grid gap-2">
-          <Label for="date_of_birth">Date of birth</Label>
-          <Popover>
-            <PopoverTrigger as-child>
-              <Button id="date_of_birth" variant="outline" :class="cn(
-                'w-full justify-start text-left font-normal',
-                !form.date_of_birth && 'text-muted-foreground',
-              )">
-                <CalendarIcon class="mr-2 h-4 w-4" />
-                <CalendarValue :value="form.date_of_birth" />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent class="w-auto p-0">
-              <CalendarSelects v-model="form.date_of_birth as DateValue" />
-            </PopoverContent>
-          </Popover>
+        <div class="grid grid-cols-2 gap-2">
+          <div class="grid gap-2">
+            <Label for="date_of_birth">Date of birth</Label>
+            <Popover>
+              <PopoverTrigger as-child>
+                <Button id="date_of_birth" variant="outline" :class="cn(
+                  'w-full justify-start text-left font-normal',
+                  !form.date_of_birth && 'text-muted-foreground',
+                )">
+                  <CalendarIcon class="mr-2 h-4 w-4" />
+                  <CalendarValue :value="form.date_of_birth" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent class="w-auto p-0">
+                <CalendarSelects v-model="form.date_of_birth as DateValue" />
+              </PopoverContent>
+            </Popover>
 
-          <InputError :message="form.errors.date_of_birth" />
-        </div>
+            <InputError :message="form.errors.date_of_birth" />
+          </div>
 
-        <div class="grid gap-2">
-          <Label for="phone_number">Phone Number</Label>
-          <Input id="phone_number" type="text" v-model="form.phone_number" />
-          <InputError :message="form.errors.phone_number" />
+          <div class="grid gap-2">
+            <Label for="phone_number">Phone Number</Label>
+            <Input id="phone_number" type="text" v-model="form.phone_number" />
+            <InputError :message="form.errors.phone_number" />
+          </div>
         </div>
 
         <DialogFooter class="gap-2">

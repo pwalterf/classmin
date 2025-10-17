@@ -39,7 +39,7 @@ final readonly class CreatePayment
                 'transacted_at' => $payment->paid_at,
                 'type' => CreditTransactionType::PURCHASE,
                 'credits' => $payment->credits_purchased,
-                'description' => 'Payment ID: '.$payment->id,
+                'description' => 'Purchase of credits'.($payment->comments ? ": {$payment->comments}" : ''),
                 'enrollment_id' => $payment->enrollment_id,
                 'transactable_type' => Payment::class,
                 'transactable_id' => $payment->id,

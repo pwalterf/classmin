@@ -92,6 +92,7 @@ export interface Student {
     date_of_birth: DateValue | string | undefined;
     phone_number: string | null;
     teacher: Teacher;
+    enrollments?: Enrollment[];
 };
 
 export interface Enrollment {

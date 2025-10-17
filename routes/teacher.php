@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Controllers\Teacher\AttendanceController;
 use App\Http\Controllers\Teacher\CourseController;
 use App\Http\Controllers\Teacher\CoursePriceController;
+use App\Http\Controllers\Teacher\CreditTransactionController;
 use App\Http\Controllers\Teacher\EnrollmentController;
 use App\Http\Controllers\Teacher\LessonController;
 use App\Http\Controllers\Teacher\PaymentController;
@@ -20,4 +21,5 @@ Route::middleware([TeacherMiddleware::class, 'auth', 'verified'])->prefix('teach
     Route::resource('lessons', LessonController::class);
     Route::patch('attendances/update', [AttendanceController::class, 'update'])->name('attendances.update');
     Route::resource('payments', PaymentController::class);
+    Route::post('creditTransactions/store', [CreditTransactionController::class, 'store'])->name('creditTransactions.store');
 })->name('teacher.');

@@ -10,18 +10,29 @@ use App\Actions\Teacher\UpdatePayment;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Teacher\PaymentStoreRequest;
 use App\Http\Requests\Teacher\PaymentUpdateRequest;
+use App\Http\Resources\Teacher\PaymentResource;
+use App\Http\Resources\Teacher\StudentResource;
 use App\Models\Payment;
+use App\Models\Student;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Gate;
+use Inertia\Inertia;
+use Inertia\Response;
 
 final class PaymentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(): void
+    public function index(): Response
     {
-        //
+        Gate::authorize('viewAny', Payment::class);
+
+        return Inertia::render('teacher/payments/Index', [
+            'payments' => fn (): AnonymousResourceCollection => PaymentResource::collection(Payment::with(['enrollment' => ['student', 'course']])->orderBy('paid_at', 'desc')->get()),
+            'students' => Inertia::optional(fn () => StudentResource::collection(Student::with('enrollments.course')->byCurrentTeacher()->get())),
+        ]);
     }
 
     /**

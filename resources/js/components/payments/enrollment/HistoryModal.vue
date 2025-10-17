@@ -5,7 +5,8 @@ import { Enrollment } from '@/types';
 import { ref } from 'vue';
 import DataTable from '@/components/ui/data-table/DataTable.vue';
 import { columns } from './columns';
-import FormModal from '@/components/payments/FormModal.vue';
+import FormModal from './FormModal.vue';
+
 
 interface Props {
   open?: boolean;

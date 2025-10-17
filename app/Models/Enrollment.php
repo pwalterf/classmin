@@ -76,7 +76,7 @@ final class Enrollment extends Model
      */
     public function creditTransactions(): HasMany
     {
-        return $this->hasMany(CreditTransaction::class);
+        return $this->hasMany(CreditTransaction::class)->orderBy('transacted_at', 'desc')->orderBy('id', 'desc');
     }
 
     /**

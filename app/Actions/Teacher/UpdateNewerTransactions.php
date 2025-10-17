@@ -20,7 +20,7 @@ final readonly class UpdateNewerTransactions
             $newerTransactions = CreditTransaction::query()
                 ->where('enrollment_id', $creditTransaction->enrollment_id)
                 ->where('transacted_at', '>=', $creditTransaction->transacted_at)
-                ->where('id', '>', $creditTransaction->id)
+                ->where('id', '<>', $creditTransaction->id)
                 ->orderBy('transacted_at')
                 ->orderBy('id')
                 ->get();

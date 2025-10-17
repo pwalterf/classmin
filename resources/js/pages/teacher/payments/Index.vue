@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-import { type Student, BreadcrumbItem } from '@/types';
+import { type Payment, BreadcrumbItem, Student } from '@/types';
 import { Head } from '@inertiajs/vue3';
-import { columns } from '@/components/students/columns';
+import { columns } from '@/components/payments/columns';
 import Heading from '@/components/Heading.vue';
 import DataTable from '@/components/ui/data-table/DataTable.vue';
 import { Button } from '@/components/ui/button';
-import FormModal from '@/components/students/FormModal.vue';
 import { ref } from 'vue';
+import FormModal from '@/components/payments/FormModal.vue';
 
 interface Props {
-  students: Student[];
+  payments: Payment[];
+  students?: Student[];
 }
 
 const props = defineProps<Props>();
@@ -19,26 +20,25 @@ const showModal = ref(false);
 
 const breadcrumbs: BreadcrumbItem[] = [
   {
-    title: 'Students',
-    href: '/teacher/students',
+    title: 'Payments',
+    href: '/teacher/payments',
   },
 ];
 </script>
 
 <template>
 
-  <Head title="Students" />
+  <Head title="Payments" />
 
   <AppLayout :breadcrumbs="breadcrumbs">
     <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-x-auto">
       <div class="flex justify-between">
-        <Heading title="Student List" description="A list of students presents in app"></Heading>
-        <Button @click="showModal = true">New student</Button>
+        <Heading title="Payment List" description="A list of payments presents in app"></Heading>
+        <Button @click="showModal = true">New payment</Button>
 
-        <FormModal v-model:open="showModal" title="New student"
-          description="Fill in the details below to create a new student." />
+        <FormModal v-model:open="showModal" title="New Payment" description="Fill in the details below" />
       </div>
-      <DataTable :columns="columns" :data="students" />
+      <DataTable :columns="columns" :data="payments" />
     </div>
   </AppLayout>
 </template>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type Course, BreadcrumbItem, Enum, Facet, Student } from '@/types';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head } from '@inertiajs/vue3';
 import { columns } from '@/components/courses/columns';
 import Heading from '@/components/Heading.vue';
 import DataTable from '@/components/ui/data-table/DataTable.vue';
@@ -42,9 +42,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-x-auto">
       <div class="flex justify-between">
         <Heading title="Course List" description="A list of courses presents in app"></Heading>
-        <Link :href="route('courses.create')">
-        <Button>New course</Button>
-        </Link>
+        <Button @click="showModal = true">New course</Button>
 
         <FormModal v-model:open="showModal" title="New course"
           description="Fill in the details below to create a new course." />

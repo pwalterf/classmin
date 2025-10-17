@@ -5,9 +5,9 @@ import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Payment } from '@/types';
 import { ref } from 'vue';
-import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '../ui/alert-dialog';
+import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { toast } from 'vue-sonner';
-import FormModal from '@/components/payments/FormModal.vue';
+import FormModal from './enrollment/FormModal.vue';
 
 interface Props {
   payment: Payment;
@@ -59,7 +59,7 @@ const deleteSubmit = () => {
   </DropdownMenu>
 
   <FormModal v-model:open="openPaymentForm" title="Edit Payment"
-    description="Edit payment for {{ payment.enrollment.student.full_name }}" :payment="payment"
+    :description="'Edit payment for ' + payment.enrollment.student.full_name" :payment="payment"
     :enrollment="payment.enrollment" />
 
   <AlertDialog v-model:open="showDeleteModal">

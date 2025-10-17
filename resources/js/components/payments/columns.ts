@@ -1,7 +1,7 @@
 import { h } from 'vue';
 import { Payment } from '@/types';
 import { ColumnDef } from '@tanstack/vue-table';
-import DataTableDropdown from '@/components/payments/enrollment/DataTableDropdown.vue';
+import DataTableDropdown from '@/components/payments/DataTableDropdown.vue';
 import DataTableColumnHeader from '@/components/ui/data-table/DataTableColumnHeader.vue';
 import { useDateFormatter } from '@/composables/useDateFormatter';
 
@@ -16,16 +16,33 @@ export const columns: ColumnDef<Payment>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'amount',
-    header: ({ column }) => h(DataTableColumnHeader, { column: column as any, title: 'Amount' }),
-    cell: ({ row }) => h('div', row.getValue('amount')),
+    id: 'student',
+    accessorKey: 'enrollment.student.full_name',
+    header: ({ column }) => h(DataTableColumnHeader, { column: column as any, title: 'Student' }),
+    cell: ({ row }) => {
+      const payment = row.original;
+      return h('div', { class: 'flex flex-col space-y-1' }, [
+        h('div', payment.enrollment.student.full_name),
+        // Aquí se añade el nombre del curso
+        h('div', { class: 'text-xs text-gray-500' }, payment.enrollment.course?.title),
+      ]);
+    },
     enableHiding: false,
   },
   {
-    id: 'credits',
+    accessorKey: 'amount',
+    header: ({ column }) => h(DataTableColumnHeader, { column: column as any, title: 'Amount' }),
+    cell: ({ row }) => {
+      const payment = row.original;
+      return h('div', payment.currency + ' $ ' + row.getValue('amount'))
+    },
+    enableHiding: false,
+  },
+  {
+    id: 'credits purchased',
     accessorKey: 'credits_purchased',
-    header: 'Credits',
-    cell: ({ row }) => h('div', row.getValue('credits')),
+    header: 'Credits Purchased',
+    cell: ({ row }) => h('div', row.getValue('credits purchased')),
   },
   {
     id: 'actions',

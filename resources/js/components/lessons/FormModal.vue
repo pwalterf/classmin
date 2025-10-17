@@ -62,7 +62,7 @@ const form = useForm<LessonForm>({
     ? toCalendarDate(parseAbsoluteToLocal(props.lesson.taught_at))
     : props.lesson?.taught_at
     || undefined,
-  course_id: props.lesson?.course.id || props.course.id,
+  course_id: props.course.id,
   attendances: attendancesFormatted || props.course.enrollments?.map(enrollment => ({
     status: 'present',
     notes: '',

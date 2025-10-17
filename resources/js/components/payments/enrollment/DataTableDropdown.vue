@@ -1,36 +1,33 @@
 <script setup lang="ts">
-import { router, usePage } from '@inertiajs/vue3';
+import { router } from '@inertiajs/vue3';
 import { MoreHorizontal } from 'lucide-vue-next';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Course, Lesson } from '@/types';
+import { Payment } from '@/types';
 import { ref } from 'vue';
-import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '../ui/alert-dialog';
+import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { toast } from 'vue-sonner';
 import FormModal from './FormModal.vue';
-import AttendancesForm from '@/components/attendances/FormModal.vue';
 
 interface Props {
-  lesson: Lesson;
+  payment: Payment;
 };
 
 const props = defineProps<Props>();
-const course = (usePage().props.course as Course);
 
-const openLessonForm = ref(false);
-const openAttendancesForm = ref(false);
+const openPaymentForm = ref(false);
 const showDeleteModal = ref(false);
 
 const deleteSubmit = () => {
-  router.delete(route('lessons.destroy', props.lesson), {
+  router.delete(route('payments.destroy', props.payment), {
     onSuccess: () => {
-      toast.success('Lesson deleted successfully', {
-        description: 'The lesson has been deleted.',
+      toast.success('Payment deleted successfully', {
+        description: 'The payment has been deleted.',
       });
     },
     onError: () => {
-      toast.error('Error deleting lesson', {
-        description: 'There was an error deleting the lesson.',
+      toast.error('Error deleting payment', {
+        description: 'There was an error deleting the payment.',
       });
     },
     onFinish: () => {
@@ -51,32 +48,25 @@ const deleteSubmit = () => {
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end">
       <DropdownMenuLabel>Actions</DropdownMenuLabel>
-      <DropdownMenuItem @select="openLessonForm = true">
-        Edit lesson
-      </DropdownMenuItem>
-      <DropdownMenuItem @select="openAttendancesForm = true">
-        Attendances
+      <DropdownMenuItem @select="openPaymentForm = true">
+        Edit payment
       </DropdownMenuItem>
       <DropdownMenuSeparator />
       <DropdownMenuItem class="text-red-600" @select="showDeleteModal = true">
-        Delete lesson
+        Delete payment
       </DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>
 
-  <FormModal v-model:open="openLessonForm" title="Edit lesson data"
-    description="Make changes to the lesson data here. Click save when you're done." :lesson="lesson"
-    :course="course" />
-
-  <AttendancesForm v-model:open="openAttendancesForm" title="Manage Attendances"
-    description="Manage the attendances for this lesson." :attendances="lesson.attendances" />
+  <FormModal v-model:open="openPaymentForm" title="Edit Payment" description="Edit payment for the enrollment"
+    :payment="payment" />
 
   <AlertDialog v-model:open="showDeleteModal">
     <AlertDialogContent>
       <AlertDialogHeader>
         <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
         <AlertDialogDescription>
-          This action cannot be undone. This lesson will no longer be
+          This action cannot be undone. This payment will no longer be
           accessible by you or others you've shared it with.
         </AlertDialogDescription>
       </AlertDialogHeader>
