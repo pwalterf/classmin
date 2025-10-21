@@ -5,7 +5,7 @@ import NavUser from '@/components/NavUser.vue';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
-import { Banknote, BookOpen, Folder, GraduationCap, LayoutGrid, LibraryBig } from 'lucide-vue-next';
+import { Banknote, BookOpen, ChartLine, Folder, GraduationCap, LayoutGrid, LibraryBig } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 
 const mainNavItems: NavItem[] = [
@@ -28,6 +28,11 @@ const mainNavItems: NavItem[] = [
         title: 'Payments',
         href: '/teacher/payments',
         icon: Banknote,
+    },
+    {
+        title: 'Reports',
+        href: '/teacher/reports',
+        icon: ChartLine,
     },
 ];
 

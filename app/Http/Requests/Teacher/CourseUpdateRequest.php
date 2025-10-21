@@ -18,7 +18,7 @@ final class CourseUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string', 'max:255', Rule::unique('courses')->where('teacher_id', $this->user()->teacher->id)->ignore($this->course->id)],
+            'title' => ['required', 'string', 'max:255', Rule::unique('courses')->where('teacher_id', $this->user()->teacher->id)->ignore($this->course)],
             'description' => ['nullable', 'string'],
             'started_at' => ['required', 'date'],
             'status' => ['required', 'string', Rule::enum(CourseStatus::class)],

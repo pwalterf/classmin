@@ -10,6 +10,13 @@ use Illuminate\Support\Facades\DB;
 final readonly class UpdateCourse
 {
     /**
+     * UpdateCourse constructor.
+     */
+    public function __construct(
+        private UpdateEnrollmentStatus $updateEnrollmentStatus,
+    ) {}
+
+    /**
      * Execute the action.
      *
      * @param  array<string, mixed>  $courseData
@@ -20,6 +27,12 @@ final readonly class UpdateCourse
             $course->fill($courseData);
 
             if ($course->isDirty()) {
+                if ($course->isDirty('status')) {
+                    $course->load('enrollments');
+                    foreach ($course->enrollments as $enrollment) {
+                        $this->updateEnrollmentStatus->handle($enrollment, $course->status);
+                    }
+                }
                 $course->save();
             }
 

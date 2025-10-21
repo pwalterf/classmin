@@ -9,17 +9,17 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Stepper, StepperDescription, StepperItem, StepperSeparator, StepperTitle, StepperTrigger } from '@/components/ui/stepper';
+import { Stepper, StepperDescription, StepperItem, StepperSeparator, StepperTrigger } from '@/components/ui/stepper';
 import { Table, TableBody, TableCell, TableEmpty, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
-import { BreadcrumbItem, Enrollment, Enum, Student } from '@/types';
+import { Course, Enrollment, Enum, Student } from '@/types';
 import { router, useForm, usePage } from '@inertiajs/vue3';
-import { DateValue } from '@internationalized/date';
+import { DateValue, parseAbsoluteToLocal, toCalendarDate } from '@internationalized/date';
 import { CalendarIcon, Check, Circle, Dot, UserRoundX } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import { toast } from 'vue-sonner';
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 interface Props {
   open: boolean;
@@ -34,7 +34,7 @@ interface CourseForm {
   status: string;
   schedule: string;
   currency: string;
-  price: string;
+  price: number;
   enrollments: Enrollment[];
   errors?: {
     [key: string]: string | undefined;
@@ -75,17 +75,6 @@ const removeEnrollment = (studentID: number) => {
   form.students = form.enrollments.filter((e) => e.student.id !== studentID);
 };
 
-const breadcrumbs: BreadcrumbItem[] = [
-  {
-    title: 'Courses',
-    href: '/teacher/courses/',
-  },
-  {
-    title: 'New course',
-    href: '/teacher/courses/create',
-  }
-];
-
 const stepIndex = ref(1);
 const steps = [
   {
@@ -109,7 +98,7 @@ const form = useForm<CourseForm>({
   status: '',
   schedule: '',
   currency: 'ARS',
-  price: '',
+  price: 0,
   enrollments: [],
 }).transform((data) => ({
   ...data,
@@ -241,14 +230,25 @@ const closeModal = () => {
             </template>
 
             <template v-if="stepIndex === 2">
-              <div class="grid grid-cols-2 gap-4">
+              <div class="grid grid-cols-4 gap-4">
                 <div class="grid gap-2">
                   <Label for="currency">Currency</Label>
-                  <Input id="currency" type="text" v-model="form.currency" />
+                  <Select v-model="form.currency">
+                    <SelectTrigger id="status" class="w-full">
+                      <SelectValue placeholder="Select a currency" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem v-for="currency in ['ARS', 'USD', 'EUR']" :value="currency">
+                          {{ currency }}
+                        </SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
                   <InputError :message="form.errors.currency" />
                 </div>
 
-                <div class="grid gap-2">
+                <div class="grid col-span-3 gap-2">
                   <Label for="price">Price per hour</Label>
                   <Input id="price" type="text" v-model="form.price" />
                   <InputError :message="form.errors.price" />
@@ -295,14 +295,17 @@ const closeModal = () => {
             </template>
 
             <div class="flex items-center justify-between mt-4">
-              <Button type="button" :disabled="!hasPrev()" variant="outline" size="sm" @click="prevStep()">
+              <Button type="button" :disabled="!hasPrev()" variant="outline" @click="prevStep()">
                 Back
               </Button>
               <div class="flex items-center gap-3">
-                <Button v-if="stepIndex !== 3" type="submit" :disabled="!hasNext()" size="sm">
+                <DialogClose as-child>
+                  <Button variant="secondary" @click="closeModal()"> Cancel </Button>
+                </DialogClose>
+                <Button v-if="stepIndex !== 3" type="submit" :disabled="!hasNext()">
                   Next
                 </Button>
-                <Button v-if="stepIndex === 3" type="submit" size="sm">
+                <Button v-if="stepIndex === 3" type="submit">
                   Submit
                 </Button>
               </div>

@@ -17,8 +17,9 @@ import { columns as lessonColumns } from '@/components/lessons/columns';
 import EnrollmentSelection from '@/components/enrollments/EnrollmentSelection.vue';
 import CoursePriceForm from '@/components/course-prices/FormModal.vue';
 import HistoryModal from '@/components/course-prices/HistoryModal.vue';
-import CourseForm from '@/components/courses/FormModal.vue';
+import EditCourseForm from '@/components/courses/EditFormModal.vue';
 import LessonForm from '@/components/lessons/FormModal.vue';
+import { Badge } from '@/components/ui/badge';
 
 interface Props {
   course: Course;
@@ -101,7 +102,10 @@ const deleteCourse = () => {
       <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card class="col-span-4 lg:col-span-3">
           <CardHeader class="flex justify-between">
-            <CardTitle>Course details</CardTitle>
+            <div class="flex items-center space-x-4">
+              <CardTitle>Course details</CardTitle>
+              <Badge :class="'bg-' + course.status.color + '-500'">{{ course.status.label }}</Badge>
+            </div>
             <DropdownMenu>
               <DropdownMenuTrigger as-child>
                 <Button variant="ghost" size="sm">
@@ -123,17 +127,13 @@ const deleteCourse = () => {
           </CardHeader>
           <CardContent>
             <div class="grid grid-cols-2 gap-4">
-              <div class="col-span-2">
+              <div>
                 <p class="text-sm text-muted-foreground">Title:</p>
                 <p class="font-medium leading-none">{{ course.title }}</p>
               </div>
               <div>
                 <p class="text-sm text-muted-foreground">Started date:</p>
                 <p class="font-medium leading-none">{{ df.format(new Date(course.started_at as string)) }}</p>
-              </div>
-              <div>
-                <p class="text-sm text-muted-foreground">Status:</p>
-                <p class="font-medium leading-none">{{ course.status.label }}</p>
               </div>
               <div class="col-span-2">
                 <p class="text-sm text-muted-foreground">Description:</p>
@@ -146,7 +146,7 @@ const deleteCourse = () => {
             </div>
           </CardContent>
 
-          <CourseForm v-model:open="openCourse" title="Edit Course" description="Edit the course details"
+          <EditCourseForm v-model:open="openCourse" title="Edit Course" description="Edit the course details"
             :course="course" />
 
           <AlertDialog v-model:open="openDeleteCourse">

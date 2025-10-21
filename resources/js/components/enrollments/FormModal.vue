@@ -124,53 +124,57 @@ const closeModal = () => {
           <DialogDescription v-if="description">{{ description }}</DialogDescription>
         </DialogHeader>
 
-        <div class="grid gap-2">
-          <Label for="status">Status</Label>
-          <Select v-model="form.status">
-            <SelectTrigger id="status" class="w-full">
-              <SelectValue placeholder="Select a status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem v-for="status in enrollmentStatuses" :key="status.value" :value="status.value">
-                  {{ status.label }}
-                </SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-          <InputError :message="form.errors.status" />
+        <div class="grid grid-cols-2 gap-2">
+          <div class="grid gap-2">
+            <Label for="enrolled_at">Enrolled date</Label>
+            <Popover>
+              <PopoverTrigger as-child>
+                <Button id="enrolled_at" variant="outline" :class="cn(
+                  'w-full justify-start text-left font-normal',
+                  !form.enrolled_at && 'text-muted-foreground',
+                )">
+                  <CalendarIcon class="mr-2 h-4 w-4" />
+                  <CalendarValue :value="form.enrolled_at" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent class="w-auto p-0">
+                <CalendarSelects v-model="form.enrolled_at as DateValue" />
+              </PopoverContent>
+            </Popover>
+
+            <InputError :message="form.errors.enrolled_at" />
+          </div>
+
+          <div class="grid gap-2">
+            <Label for="status">Status</Label>
+            <Select v-model="form.status">
+              <SelectTrigger id="status" class="w-full">
+                <SelectValue placeholder="Select a status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem v-for="status in enrollmentStatuses" :key="status.value" :value="status.value">
+                    {{ status.label }}
+                  </SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+            <InputError :message="form.errors.status" />
+          </div>
         </div>
 
-        <div class="grid gap-2">
-          <Label for="enrolled_at">Enrolled date</Label>
-          <Popover>
-            <PopoverTrigger as-child>
-              <Button id="enrolled_at" variant="outline" :class="cn(
-                'w-full justify-start text-left font-normal',
-                !form.enrolled_at && 'text-muted-foreground',
-              )">
-                <CalendarIcon class="mr-2 h-4 w-4" />
-                <CalendarValue :value="form.enrolled_at" />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent class="w-auto p-0">
-              <CalendarSelects v-model="form.enrolled_at as DateValue" />
-            </PopoverContent>
-          </Popover>
+        <div class="grid grid-cols-2 gap-2">
+          <div class="grid gap-2">
+            <Label for="credits">Credits</Label>
+            <Input id="credits" type="text" v-model="form.credits" />
+            <InputError :message="form.errors.credits" />
+          </div>
 
-          <InputError :message="form.errors.enrolled_at" />
-        </div>
-
-        <div class="grid gap-2">
-          <Label for="credits">Credits</Label>
-          <Input id="credits" type="text" v-model="form.credits" />
-          <InputError :message="form.errors.credits" />
-        </div>
-
-        <div class="grid gap-2">
-          <Label for="discount_pct">Discount percentage</Label>
-          <Input id="discount_pct" type="string" v-model="form.discount_pct" />
-          <InputError :message="form.errors.discount_pct" />
+          <div class="grid gap-2">
+            <Label for="discount_pct">Discount percentage</Label>
+            <Input id="discount_pct" type="string" v-model="form.discount_pct" />
+            <InputError :message="form.errors.discount_pct" />
+          </div>
         </div>
 
         <DialogFooter class="gap-2">

@@ -102,7 +102,7 @@ final class Course extends Model
     /**
      * Get the attributes that should be cast.
      *
-     * @return array<string, string>
+     * @return array{started_at: 'date', status: 'App\\Enums\\CourseStatus'}
      */
     protected function casts(): array
     {

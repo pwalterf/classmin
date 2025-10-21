@@ -48,9 +48,8 @@ const deleteSubmit = () => {
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end">
       <DropdownMenuLabel>Actions</DropdownMenuLabel>
-      <DropdownMenuItem>View student</DropdownMenuItem>
       <DropdownMenuItem @select="showModal = true">
-        Edit student data
+        Edit student
       </DropdownMenuItem>
       <DropdownMenuSeparator />
       <DropdownMenuItem class="text-red-600" @select="showDeleteModal = true">

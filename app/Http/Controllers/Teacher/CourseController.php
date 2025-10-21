@@ -36,7 +36,7 @@ final class CourseController extends Controller
         return Inertia::render('teacher/courses/Index', [
             'courses' => fn () => CourseResource::collection(Course::query()
                 ->where('teacher_id', auth()->user()->teacher->id)
-                ->with(['enrollments.student', 'prices'])
+                ->with(['enrollments.student', 'prices', 'lastPrice'])
                 ->get()),
             'courseStatuses' => fn (): array => CourseStatus::cases(),
             'enrollmentStatuses' => fn (): array => EnrollmentStatus::cases(),

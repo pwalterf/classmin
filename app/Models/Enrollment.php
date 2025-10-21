@@ -82,7 +82,7 @@ final class Enrollment extends Model
     /**
      * Get the attributes that should be cast.
      *
-     * @return array<string, string>
+     * @return array{enrolled_at: 'date', status: 'App\\Enums\\EnrollmentStatus'}
      */
     protected function casts(): array
     {

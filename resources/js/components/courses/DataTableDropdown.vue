@@ -7,8 +7,9 @@ import { Course } from '@/types';
 import { ref } from 'vue';
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '../ui/alert-dialog';
 import { toast } from 'vue-sonner';
-import FormModal from '@/components/courses/FormModal.vue';
+import EditFormModal from '@/components/courses/EditFormModal.vue';
 import LessonForm from '@/components/lessons/FormModal.vue';
+import HistoryModal from '@/components/course-prices/HistoryModal.vue';
 
 interface Props {
   course: Course;
@@ -18,6 +19,7 @@ const props = defineProps<Props>();
 
 const showModal = ref(false);
 const showLessonForm = ref(false);
+const showPriceHistory = ref(false);
 const showDeleteModal = ref(false);
 
 const deleteSubmit = () => {
@@ -59,6 +61,9 @@ const deleteSubmit = () => {
       <DropdownMenuItem @select="showLessonForm = true">
         New lesson
       </DropdownMenuItem>
+      <DropdownMenuItem @select="showPriceHistory = true">
+        Prices
+      </DropdownMenuItem>
       <DropdownMenuSeparator />
       <DropdownMenuItem class="text-red-600" @select="showDeleteModal = true">
         Delete course
@@ -66,11 +71,14 @@ const deleteSubmit = () => {
     </DropdownMenuContent>
   </DropdownMenu>
 
-  <FormModal v-model:open="showModal" title="Edit course data"
+  <EditFormModal v-model:open="showModal" title="Edit course data"
     description="Make changes to the course data here. Click save when you're done." :course="course" />
 
   <LessonForm v-model:open="showLessonForm" title="New lesson" description="Create a new lesson for this course."
     :course="course" />
+
+  <HistoryModal v-model:open="showPriceHistory" title="Price History"
+    description="View the price history for this course" :course="course" />
 
   <AlertDialog v-model:open="showDeleteModal">
     <AlertDialogContent>
