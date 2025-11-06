@@ -50,7 +50,7 @@ final class Lesson extends Model
     /**
      * Get the attributes that should be cast.
      *
-     * @return array<string, string>
+     * @return array{taught_at: 'date'}
      */
     protected function casts(): array
     {

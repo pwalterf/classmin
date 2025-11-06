@@ -1,5 +1,4 @@
 import type { LucideIcon } from 'lucide-vue-next';
-import { DateValue } from 'reka-ui';
 import type { Config } from 'ziggy-js';
 
 export interface Auth {
@@ -63,7 +62,7 @@ export interface Course {
     id: number;
     title: string;
     description: string;
-    started_at: DateValue | string | undefined;
+    started_at: string | undefined;
     status: Enum;
     schedule: string | null;
     teacher: Teacher;
@@ -78,8 +77,8 @@ export interface CoursePrice {
     id: number;
     price: number;
     currency: string;
-    started_at: DateValue | string | undefined;
-    ended_at: DateValue | string | undefined;
+    started_at: string | undefined;
+    ended_at: string | undefined;
     course: Course;
 };
 
@@ -89,7 +88,7 @@ export interface Student {
     last_name: string;
     full_name: string;
     email: string;
-    date_of_birth: DateValue | string | undefined;
+    date_of_birth: string | undefined;
     phone_number: string | null;
     teacher: Teacher;
     enrollments?: Enrollment[];
@@ -98,7 +97,7 @@ export interface Student {
 export interface Enrollment {
     id?: number;
     status: Enum;
-    enrolled_at: DateValue | string | undefined;
+    enrolled_at: string | undefined;
     credits: number;
     discount_pct: number | undefined;
     student: Student;
@@ -112,7 +111,7 @@ export interface Lesson {
     notes: string;
     student_page: string | null;
     workbook_page: string | null;
-    taught_at: DateValue | string | undefined;
+    taught_at: string | undefined;
     course: Course;
     attendances: Attendance[];
 }
@@ -130,14 +129,14 @@ export interface Payment {
     amount: number;
     currency: string;
     credits_purchased: number;
-    paid_at: DateValue | string | undefined;
+    paid_at: string;
     comments?: string;
     enrollment: Enrollment;
 };
 
 export interface CreditTransaction {
     id: number;
-    transacted_at: DateValue | string | undefined;
+    transacted_at: string | undefined;
     type: Enum;
     credits: number;
     balance: number;

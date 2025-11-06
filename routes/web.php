@@ -10,7 +10,9 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('dashboard', function () {
-    return Inertia::render('Dashboard');
+    $route = auth()->user()->hasRole('teacher') ? 'teacher.dashboard' : 'admin.dashboard';
+
+    return redirect(route($route));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 require __DIR__.'/settings.php';

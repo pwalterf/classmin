@@ -7,10 +7,10 @@ import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
 import { useForm, usePage } from '@inertiajs/vue3';
 import { toast } from 'vue-sonner';
-import { DateValue, parseAbsoluteToLocal, toCalendarDate } from "@internationalized/date";
+import { parseAbsoluteToLocal, parseDate, toCalendarDate } from "@internationalized/date";
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { CalendarIcon } from 'lucide-vue-next';
-import CalendarSelects from '@/components/ui/calendar/CalendarSelects.vue';
+import CalendarCustom from '@/components/ui/calendar/CalendarCustom.vue';
 import { cn } from '@/lib/utils';
 import CalendarValue from '@/components/ui/calendar/CalendarValue.vue';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -27,7 +27,7 @@ interface Props {
 
 interface EnrollmentForm {
   status: string;
-  enrolled_at: DateValue | string | undefined;
+  enrolled_at: string | undefined;
   credits: number;
   discount_pct: number;
   course_id?: number | null;
@@ -52,12 +52,17 @@ const addEnrollment = () => {
     student: props.student,
   };
   emit('enrollment-saved', temporalEnrollment);
-}
+};
+
+const enrolled_at = computed({
+  get: () => typeof form.enrolled_at !== 'undefined' ? parseDate(form.enrolled_at) : undefined,
+  set: (val) => form.enrolled_at = val?.toString(),
+});
 
 const form = useForm<EnrollmentForm>({
   status: props.enrollment?.status.value || '',
   enrolled_at: typeof props.enrollment?.enrolled_at === 'string'
-    ? toCalendarDate(parseAbsoluteToLocal(props.enrollment.enrolled_at))
+    ? toCalendarDate(parseAbsoluteToLocal(props.enrollment.enrolled_at)).toString()
     : props.enrollment?.enrolled_at
     || undefined,
   credits: props.enrollment?.credits || 0,
@@ -66,7 +71,7 @@ const form = useForm<EnrollmentForm>({
   student_id: props.student.id,
 }).transform((data) => ({
   ...data,
-  enrolled_at: data.enrolled_at ? data.enrolled_at.toString() : null,
+  enrolled_at: data.enrolled_at ?? null,
 }));
 
 const submitForm = () => {
@@ -134,11 +139,11 @@ const closeModal = () => {
                   !form.enrolled_at && 'text-muted-foreground',
                 )">
                   <CalendarIcon class="mr-2 h-4 w-4" />
-                  <CalendarValue :value="form.enrolled_at" />
+                  <CalendarValue :value="enrolled_at" />
                 </Button>
               </PopoverTrigger>
               <PopoverContent class="w-auto p-0">
-                <CalendarSelects v-model="form.enrolled_at as DateValue" />
+                <CalendarCustom v-model="enrolled_at" />
               </PopoverContent>
             </Popover>
 

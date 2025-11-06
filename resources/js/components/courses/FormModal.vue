@@ -3,8 +3,8 @@ import EnrollmentSelection from '@/components/enrollments/EnrollmentSelection.vu
 import Heading from '@/components/Heading.vue';
 import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
-import CalendarSelects from '@/components/ui/calendar/CalendarSelects.vue';
 import CalendarValue from '@/components/ui/calendar/CalendarValue.vue';
+import CalendarCustom from '../ui/calendar/CalendarCustom.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -13,9 +13,9 @@ import { Stepper, StepperDescription, StepperItem, StepperSeparator, StepperTrig
 import { Table, TableBody, TableCell, TableEmpty, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
-import { Course, Enrollment, Enum, Student } from '@/types';
+import { Enrollment, Enum, Student } from '@/types';
 import { router, useForm, usePage } from '@inertiajs/vue3';
-import { DateValue, parseAbsoluteToLocal, toCalendarDate } from '@internationalized/date';
+import { parseDate } from '@internationalized/date';
 import { CalendarIcon, Check, Circle, Dot, UserRoundX } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import { toast } from 'vue-sonner';
@@ -30,7 +30,7 @@ interface Props {
 interface CourseForm {
   title: string;
   description: string;
-  started_at: DateValue | undefined;
+  started_at: string | undefined;
   status: string;
   schedule: string;
   currency: string;
@@ -91,6 +91,11 @@ const steps = [
   },
 ];
 
+const started_at = computed({
+  get: () => typeof form.started_at !== 'undefined' ? parseDate(form.started_at) : undefined,
+  set: (val) => form.started_at = val?.toString(),
+});
+
 const form = useForm<CourseForm>({
   title: '',
   description: '',
@@ -102,13 +107,13 @@ const form = useForm<CourseForm>({
   enrollments: [],
 }).transform((data) => ({
   ...data,
-  started_at: data.started_at ? data.started_at.toString() : null,
+  started_at: data.started_at ?? null,
   step: stepIndex.value,
 }));
 
 const submitForm = () => {
   form.post(route('courses.store'), {
-    preserveState: true,
+    preserveState: 'errors',
     onSuccess: () => {
       if (stepIndex.value === 3) {
         toast.success('Course created successfully', {
@@ -193,11 +198,11 @@ const closeModal = () => {
                         !form.started_at && 'text-muted-foreground',
                       )">
                         <CalendarIcon class="mr-2 h-4 w-4" />
-                        <CalendarValue :value="form.started_at" />
+                        <CalendarValue :value="started_at" />
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent class="w-auto p-0">
-                      <CalendarSelects v-model="form.started_at" initial-focus />
+                      <CalendarCustom v-model="started_at" initial-focus />
                     </PopoverContent>
                   </Popover>
 

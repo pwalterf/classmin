@@ -7,12 +7,13 @@ import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
 import { useForm } from '@inertiajs/vue3';
 import { toast } from 'vue-sonner';
-import { DateValue, parseAbsoluteToLocal, toCalendarDate } from '@internationalized/date';
+import { parseAbsoluteToLocal, parseDate, toCalendarDate } from '@internationalized/date';
 import { cn } from '@/lib/utils';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { CalendarIcon } from 'lucide-vue-next';
 import CalendarValue from '@/components/ui/calendar/CalendarValue.vue';
-import CalendarSelects from '@/components/ui/calendar/CalendarSelects.vue';
+import CalendarCustom from '@/components/ui/calendar/CalendarCustom.vue';
+import { computed } from 'vue';
 
 interface Props {
   open: boolean;
@@ -25,8 +26,8 @@ interface Props {
 interface CoursePriceForm {
   price: number;
   currency: string;
-  started_at: DateValue | string | undefined;
-  ended_at?: DateValue | string | undefined;
+  started_at: string | undefined;
+  ended_at?: string | undefined;
   course_id: number;
   errors?: {
     [key: string]: string | undefined;
@@ -37,22 +38,32 @@ interface CoursePriceForm {
 const props = defineProps<Props>();
 const emit = defineEmits(['update:open']);
 
+const started_at = computed({
+  get: () => typeof form.started_at !== 'undefined' ? parseDate(form.started_at) : undefined,
+  set: (val) => form.started_at = val?.toString(),
+});
+
+const ended_at = computed({
+  get: () => typeof form.ended_at !== 'undefined' ? parseDate(form.ended_at) : undefined,
+  set: (val) => form.ended_at = val?.toString(),
+});
+
 const form = useForm<CoursePriceForm>({
   price: props.coursePrice?.price || 0,
   currency: props.coursePrice?.currency || 'ARS',
   started_at: typeof props.coursePrice?.started_at === 'string'
-    ? toCalendarDate(parseAbsoluteToLocal(props.coursePrice.started_at))
+    ? toCalendarDate(parseAbsoluteToLocal(props.coursePrice.started_at)).toString()
     : props.coursePrice?.started_at
     || undefined,
   ended_at: typeof props.coursePrice?.ended_at === 'string'
-    ? toCalendarDate(parseAbsoluteToLocal(props.coursePrice.ended_at))
+    ? toCalendarDate(parseAbsoluteToLocal(props.coursePrice.ended_at)).toString()
     : props.coursePrice?.ended_at
     || undefined,
   course_id: props.course.id,
 }).transform((data) => ({
   ...data,
-  started_at: data.started_at ? data.started_at.toString() : null,
-  ended_at: data.ended_at ? data.ended_at.toString() : null,
+  started_at: data.started_at ?? null,
+  ended_at: data.ended_at ?? null,
 }));
 
 const submitForm = () => {
@@ -129,11 +140,11 @@ const closeModal = () => {
                   !form.started_at && 'text-muted-foreground',
                 )">
                   <CalendarIcon class="mr-2 h-4 w-4" />
-                  <CalendarValue :value="form.started_at" />
+                  <CalendarValue :value="started_at" />
                 </Button>
               </PopoverTrigger>
               <PopoverContent class="w-auto p-0">
-                <CalendarSelects v-model="form.started_at as DateValue" />
+                <CalendarCustom v-model="started_at" />
               </PopoverContent>
             </Popover>
 
@@ -149,11 +160,11 @@ const closeModal = () => {
                   !form.ended_at && 'text-muted-foreground',
                 )">
                   <CalendarIcon class="mr-2 h-4 w-4" />
-                  <CalendarValue :value="form.ended_at" />
+                  <CalendarValue :value="ended_at" />
                 </Button>
               </PopoverTrigger>
               <PopoverContent class="w-auto p-0">
-                <CalendarSelects v-model="form.ended_at as DateValue" />
+                <CalendarCustom v-model="ended_at" />
               </PopoverContent>
             </Popover>
 

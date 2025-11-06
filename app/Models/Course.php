@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\CourseStatus;
+use App\Enums\EnrollmentStatus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -59,6 +60,16 @@ final class Course extends Model
     public function enrollments(): HasMany
     {
         return $this->hasMany(Enrollment::class);
+    }
+
+    /**
+     * Get the active enrollments for the course.
+     *
+     * @return HasMany<Enrollment, $this>
+     */
+    public function activeEnrollments(): HasMany
+    {
+        return $this->hasMany(Enrollment::class)->where('status', EnrollmentStatus::ACTIVE);
     }
 
     /**

@@ -7,12 +7,13 @@ import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
 import { router, useForm } from '@inertiajs/vue3';
 import { toast } from 'vue-sonner';
-import { DateValue, parseAbsoluteToLocal, toCalendarDate } from "@internationalized/date";
+import { DateValue, parseAbsoluteToLocal, parseDate, toCalendarDate } from "@internationalized/date";
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { CalendarIcon } from 'lucide-vue-next';
-import CalendarSelects from '@/components/ui/calendar/CalendarSelects.vue';
+import CalendarCustom from '@/components/ui/calendar/CalendarCustom.vue';
 import { cn } from '@/lib/utils';
 import CalendarValue from '../ui/calendar/CalendarValue.vue';
+import { computed } from 'vue';
 
 interface Props {
   open: boolean;
@@ -25,7 +26,7 @@ interface StudentForm {
   first_name: string;
   last_name: string;
   email: string;
-  date_of_birth: DateValue | string | undefined;
+  date_of_birth: string | undefined;
   phone_number: string;
   errors?: {
     [key: string]: string | undefined;
@@ -36,12 +37,17 @@ interface StudentForm {
 const props = defineProps<Props>();
 const emit = defineEmits(['update:open']);
 
+const date_of_birth = computed({
+  get: () => typeof form.date_of_birth !== 'undefined' ? parseDate(form.date_of_birth) : undefined,
+  set: (val) => form.date_of_birth = val?.toString(),
+});
+
 const form = useForm<StudentForm>({
   first_name: props.student?.first_name || '',
   last_name: props.student?.last_name || '',
   email: props.student?.email || '',
   date_of_birth: typeof props.student?.date_of_birth === 'string'
-    ? toCalendarDate(parseAbsoluteToLocal(props.student.date_of_birth))
+    ? toCalendarDate(parseAbsoluteToLocal(props.student.date_of_birth)).toString()
     : props.student?.date_of_birth
     || undefined,
   phone_number: props.student?.phone_number || '',
@@ -133,11 +139,11 @@ const closeModal = () => {
                   !form.date_of_birth && 'text-muted-foreground',
                 )">
                   <CalendarIcon class="mr-2 h-4 w-4" />
-                  <CalendarValue :value="form.date_of_birth" />
+                  <CalendarValue :value="date_of_birth" />
                 </Button>
               </PopoverTrigger>
               <PopoverContent class="w-auto p-0">
-                <CalendarSelects v-model="form.date_of_birth as DateValue" />
+                <CalendarCustom v-model="date_of_birth" />
               </PopoverContent>
             </Popover>
 

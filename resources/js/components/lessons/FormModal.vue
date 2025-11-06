@@ -10,9 +10,9 @@ import { useForm, usePage } from '@inertiajs/vue3';
 import { toast } from 'vue-sonner';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { CalendarIcon } from 'lucide-vue-next';
-import { DateValue, parseAbsoluteToLocal, toCalendarDate } from "@internationalized/date";
+import { DateValue, parseAbsoluteToLocal, parseDate, toCalendarDate } from "@internationalized/date";
 import { cn } from '@/lib/utils';
-import CalendarSelects from '@/components/ui/calendar/CalendarSelects.vue';
+import CalendarCustom from '@/components/ui/calendar/CalendarCustom.vue';
 import CalendarValue from '@/components/ui/calendar/CalendarValue.vue';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
@@ -30,7 +30,7 @@ interface LessonForm {
   notes: string;
   student_page: string;
   workbook_page: string;
-  taught_at: DateValue | string | undefined;
+  taught_at: string | undefined;
   course_id: number;
   attendances: Array<{
     status: string;
@@ -54,12 +54,17 @@ const attendancesFormatted = props.lesson?.attendances.map(attendance => ({
   enrollment: attendance.enrollment,
 }));
 
+const taught_at = computed({
+  get: () => typeof form.taught_at !== 'undefined' ? parseDate(form.taught_at) : undefined,
+  set: (val) => form.taught_at = val?.toString(),
+});
+
 const form = useForm<LessonForm>({
   notes: props.lesson?.notes || '',
   student_page: props.lesson?.student_page || '',
   workbook_page: props.lesson?.workbook_page || '',
   taught_at: typeof props.lesson?.taught_at === 'string'
-    ? toCalendarDate(parseAbsoluteToLocal(props.lesson.taught_at))
+    ? toCalendarDate(parseAbsoluteToLocal(props.lesson.taught_at)).toString()
     : props.lesson?.taught_at
     || undefined,
   course_id: props.course.id,
@@ -70,7 +75,7 @@ const form = useForm<LessonForm>({
   })),
 }).transform((data) => ({
   ...data,
-  taught_at: data.taught_at ? data.taught_at.toString() : null,
+  taught_at: data.taught_at ?? null,
 }));
 
 const submitForm = () => {
@@ -134,11 +139,11 @@ const closeModal = () => {
                 !form.taught_at && 'text-muted-foreground',
               )">
                 <CalendarIcon class="mr-2 h-4 w-4" />
-                <CalendarValue :value="form.taught_at" />
+                <CalendarValue :value="taught_at" />
               </Button>
             </PopoverTrigger>
             <PopoverContent class="w-auto p-0">
-              <CalendarSelects v-model="form.taught_at as DateValue" />
+              <CalendarCustom v-model="taught_at" />
             </PopoverContent>
           </Popover>
 

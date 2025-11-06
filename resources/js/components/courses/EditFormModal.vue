@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
-import CalendarSelects from '@/components/ui/calendar/CalendarSelects.vue';
+import CalendarCustom from '@/components/ui/calendar/CalendarCustom.vue';
 import CalendarValue from '@/components/ui/calendar/CalendarValue.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -11,7 +11,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import { Course, Enum } from '@/types';
 import { useForm, usePage } from '@inertiajs/vue3';
-import { DateValue, parseAbsoluteToLocal, toCalendarDate } from '@internationalized/date';
+import { parseAbsoluteToLocal, parseDate, toCalendarDate } from '@internationalized/date';
 import { CalendarIcon } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import { toast } from 'vue-sonner';
@@ -27,7 +27,7 @@ interface Props {
 interface CourseForm {
   title: string;
   description: string;
-  started_at: DateValue | undefined;
+  started_at: string | undefined;
   status: string;
   schedule: string;
   errors?: {
@@ -43,17 +43,22 @@ const emit = defineEmits(['update:open']);
 const courseStatuses = computed(() => (usePage().props.courseStatuses as Enum[]));
 const loading = ref(false);
 
+const started_at = computed({
+  get: () => typeof form.started_at !== 'undefined' ? parseDate(form.started_at) : undefined,
+  set: (val) => form.started_at = val?.toString(),
+});
+
 const form = useForm<CourseForm>({
   title: props.course.title,
   description: props.course.description,
   started_at: typeof props.course.started_at === 'string'
-    ? toCalendarDate(parseAbsoluteToLocal(props.course.started_at))
+    ? toCalendarDate(parseAbsoluteToLocal(props.course.started_at)).toString()
     : props.course.started_at ?? undefined,
   status: props.course.status.value,
   schedule: props.course.schedule ?? '',
 }).transform((data) => ({
   ...data,
-  started_at: data.started_at ? data.started_at.toString() : null,
+  started_at: data.started_at ?? null,
 }));
 
 const submitForm = () => {
@@ -110,11 +115,11 @@ const closeModal = () => {
                   !form.started_at && 'text-muted-foreground',
                 )">
                   <CalendarIcon class="mr-2 h-4 w-4" />
-                  <CalendarValue :value="form.started_at" />
+                  <CalendarValue :value="started_at" />
                 </Button>
               </PopoverTrigger>
               <PopoverContent class="w-auto p-0">
-                <CalendarSelects v-model="form.started_at" initial-focus />
+                <CalendarCustom v-model="started_at" initial-focus />
               </PopoverContent>
             </Popover>
 

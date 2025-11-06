@@ -6,6 +6,7 @@ use App\Http\Controllers\Teacher\AttendanceController;
 use App\Http\Controllers\Teacher\CourseController;
 use App\Http\Controllers\Teacher\CoursePriceController;
 use App\Http\Controllers\Teacher\CreditTransactionController;
+use App\Http\Controllers\Teacher\DashboardController;
 use App\Http\Controllers\Teacher\EnrollmentController;
 use App\Http\Controllers\Teacher\LessonController;
 use App\Http\Controllers\Teacher\PaymentController;
@@ -14,6 +15,7 @@ use App\Http\Middleware\TeacherMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware([TeacherMiddleware::class, 'auth', 'verified'])->prefix('teacher')->group(function () {
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('teacher.dashboard');
     Route::resource('courses', CourseController::class);
     Route::resource('students', StudentController::class);
     Route::resource('enrollments', EnrollmentController::class);

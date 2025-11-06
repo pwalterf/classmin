@@ -10,10 +10,11 @@ import { useForm } from '@inertiajs/vue3';
 import { toast } from 'vue-sonner';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { CalendarIcon } from 'lucide-vue-next';
-import { DateValue } from "@internationalized/date";
+import { parseDate } from "@internationalized/date";
 import { cn } from '@/lib/utils';
-import CalendarSelects from '@/components/ui/calendar/CalendarSelects.vue';
+import CalendarCustom from '@/components/ui/calendar/CalendarCustom.vue';
 import CalendarValue from '@/components/ui/calendar/CalendarValue.vue';
+import { computed } from 'vue';
 
 interface Props {
   open: boolean;
@@ -23,7 +24,7 @@ interface Props {
 };
 
 interface CreditTransactionForm {
-  transacted_at: DateValue | string | undefined;
+  transacted_at: string | undefined;
   type: string;
   credits: number;
   description?: string;
@@ -37,6 +38,11 @@ interface CreditTransactionForm {
 const props = defineProps<Props>();
 const emit = defineEmits(['update:open']);
 
+const transacted_at = computed({
+  get: () => typeof form.transacted_at !== 'undefined' ? parseDate(form.transacted_at) : undefined,
+  set: (val) => form.transacted_at = val?.toString(),
+});
+
 const form = useForm<CreditTransactionForm>({
   transacted_at: undefined,
   type: 'adjustment',
@@ -45,7 +51,7 @@ const form = useForm<CreditTransactionForm>({
   enrollment_id: props.enrollment.id ?? 0,
 }).transform((data) => ({
   ...data,
-  transacted_at: data.transacted_at ? data.transacted_at.toString() : null,
+  transacted_at: data.transacted_at ?? null,
 }));
 
 const submitForm = () => {
@@ -92,11 +98,11 @@ const closeModal = () => {
                   !form.transacted_at && 'text-muted-foreground',
                 )">
                   <CalendarIcon class="mr-2 h-4 w-4" />
-                  <CalendarValue :value="form.transacted_at" />
+                  <CalendarValue :value="transacted_at" />
                 </Button>
               </PopoverTrigger>
               <PopoverContent class="w-auto p-0">
-                <CalendarSelects v-model="form.transacted_at as DateValue" />
+                <CalendarCustom v-model="transacted_at" />
               </PopoverContent>
             </Popover>
 

@@ -10,10 +10,11 @@ import { useForm } from '@inertiajs/vue3';
 import { toast } from 'vue-sonner';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { CalendarIcon } from 'lucide-vue-next';
-import { DateValue, parseAbsoluteToLocal, toCalendarDate } from "@internationalized/date";
+import { parseAbsoluteToLocal, parseDate, toCalendarDate } from "@internationalized/date";
 import { cn } from '@/lib/utils';
-import CalendarSelects from '@/components/ui/calendar/CalendarSelects.vue';
 import CalendarValue from '@/components/ui/calendar/CalendarValue.vue';
+import CalendarCustom from '@/components/ui/calendar/CalendarCustom.vue';
+import { computed } from 'vue';
 
 interface Props {
   open: boolean;
@@ -27,7 +28,7 @@ interface PaymentForm {
   amount: number;
   currency: string;
   credits_purchased: number;
-  paid_at: DateValue | string | undefined;
+  paid_at: string | undefined;
   comments?: string;
   enrollment_id?: number;
   errors?: {
@@ -39,19 +40,23 @@ interface PaymentForm {
 const props = defineProps<Props>();
 const emit = defineEmits(['update:open']);
 
+const paid_at = computed({
+  get: () => typeof form.paid_at !== 'undefined' ? parseDate(form.paid_at) : undefined,
+  set: (val) => form.paid_at = val?.toString(),
+});
+
 const form = useForm<PaymentForm>({
   amount: props.payment?.amount || 0.00,
   currency: props.payment?.currency || 'ARS',
   credits_purchased: props.payment?.credits_purchased || 0,
   paid_at: typeof props.payment?.paid_at === 'string'
-    ? toCalendarDate(parseAbsoluteToLocal(props.payment.paid_at))
-    : props.payment?.paid_at
-    || undefined,
+    ? toCalendarDate(parseAbsoluteToLocal(props.payment?.paid_at)).toString()
+    : undefined,
   comments: props.payment?.comments || '',
   enrollment_id: props.enrollment?.id || undefined,
 }).transform((data) => ({
   ...data,
-  paid_at: data.paid_at ? data.paid_at.toString() : null,
+  paid_at: data.paid_at ?? null,
 }));
 
 const submitForm = () => {
@@ -136,11 +141,11 @@ const closeModal = () => {
                   !form.paid_at && 'text-muted-foreground',
                 )">
                   <CalendarIcon class="mr-2 h-4 w-4" />
-                  <CalendarValue :value="form.paid_at" />
+                  <CalendarValue :value="paid_at" />
                 </Button>
               </PopoverTrigger>
               <PopoverContent class="w-auto p-0">
-                <CalendarSelects v-model="form.paid_at as DateValue" />
+                <CalendarCustom v-model="paid_at" />
               </PopoverContent>
             </Popover>
 
