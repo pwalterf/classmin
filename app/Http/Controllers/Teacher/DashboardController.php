@@ -13,6 +13,7 @@ use App\Models\Lesson;
 use App\Models\Payment;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Number;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -20,17 +21,10 @@ final class DashboardController extends Controller
 {
     public function index(): Response
     {
-        // Cantidad de alumnos y cursos por mes (Barras) --->
-        // Lecciones impartidas en el tiempo, particionado por el status de lesson (Barras) --->
-        // Ingresos por mes (Barras o Lineas) --->
-        // Lecciones cobradas y pendientes de pago (Cards) --->
-        // Precios de los cursos (Minimo, Maximo y Promedio) (Card) --->
-        // Alumnos deudores (Tabla) --->
         $teacher = Auth::user()->teacher;
         $teacher->load(['activeCourses' => function ($query): void {
-            $query->with(['lastPrice', 'activeEnrollments'])
-                ->withCount('activeEnrollments');
-        }])->loadCount('activeCourses');
+            $query->with(['lastPrice', 'activeEnrollments']);
+        }]);
         $activeEnrollments = $teacher->activeCourses->pluck('activeEnrollments')->flatten();
 
         $yearPayments = Payment::whereRelation('enrollment.course.teacher', 'teacher_id', $teacher->id)
@@ -43,7 +37,7 @@ final class DashboardController extends Controller
         $lessonsCount = collect();
         $studentCount = collect();
         $courseCount = collect();
-        $lessonsPerMonth = Lesson::whereRelation('course.teacher', 'teacher_id', $teacher->id)
+        $lessonsPerMonth = Lesson::whereRelation('course', 'teacher_id', $teacher->id)
             ->whereDate('taught_at', '>=', now()->subMonths(12)->startOfMonth())
             ->with('attendances')
             ->orderBy('taught_at')
@@ -76,11 +70,38 @@ final class DashboardController extends Controller
             'series' => [['Courses', $courseCount], ['Students', $studentCount]],
         ];
 
+        // Cards data
+        $currentCourseCount = $courseCount->last() ?? 0;
+        $lastMonthCourseCount = $courseCount->count() > 1 ? $courseCount[$courseCount->count() - 2] : 0;
+        $currentStudentCount = $studentCount->last() ?? 0;
+        $lastMonthStudentCount = $studentCount->count() > 1 ? $studentCount[$studentCount->count() - 2] : 0;
+        $currentLessonsCount = $lessonsCount->last() ?? 0;
+        $lastMonthLessonsCount = $lessonsCount->count() > 1 ? $lessonsCount[$lessonsCount->count() - 2] : 0;
         $cards = [
-            'active_courses_count' => $teacher->active_courses_count,
-            'active_students_count' => $teacher->activeCourses->sum('active_enrollments_count'),
-            'monthly_lessons_count' => $lessonsCount->last(),
-            'income' => $yearPayments->get(now()->format('Y-m')) ?? 0,
+            'active_courses' => [
+                'count' => $currentCourseCount,
+                'diff' => Number::percentage($lastMonthCourseCount > 0 ? ($currentCourseCount - $lastMonthCourseCount) / $lastMonthCourseCount * 100 : 100, 1),
+            ],
+            'active_students' => [
+                'count' => $currentStudentCount,
+                'diff' => Number::percentage($lastMonthStudentCount > 0 ? ($currentStudentCount - $lastMonthStudentCount) / $lastMonthStudentCount * 100 : 100, 1),
+            ],
+            'monthly_lessons' => [
+                'count' => $currentLessonsCount,
+                'diff' => Number::percentage($lastMonthLessonsCount > 0 ? ($currentLessonsCount - $lastMonthLessonsCount) / $lastMonthLessonsCount * 100 : 100, 1),
+            ],
+            'income' => [
+                'month' => $yearPayments->get(now()->format('Y-m')) ?? 0,
+                'diff' => Number::percentage(
+                    $yearPayments->get(now()->subMonth()->format('Y-m')) > 0 ?
+                    (
+                        ($yearPayments->get(now()->format('Y-m')) ?? 0) -
+                        ($yearPayments->get(now()->subMonth()->format('Y-m')))
+                    ) /
+                    $yearPayments->get(now()->subMonth()->format('Y-m')) * 100 : 100,
+                    1
+                ),
+            ],
         ];
 
         $coursePrices = [

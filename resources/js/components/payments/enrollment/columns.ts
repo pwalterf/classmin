@@ -18,7 +18,10 @@ export const columns: ColumnDef<Payment>[] = [
   {
     accessorKey: 'amount',
     header: ({ column }) => h(DataTableColumnHeader, { column: column as any, title: 'Amount' }),
-    cell: ({ row }) => h('div', row.getValue('amount')),
+    cell: ({ row }) => {
+      const payment = row.original;
+      return h('div', payment.currency + ' $ ' + row.getValue('amount'))
+    },
     enableHiding: false,
   },
   {

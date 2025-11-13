@@ -2,7 +2,6 @@
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Enrollment, type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/vue3';
-import PlaceholderPattern from '@/components/PlaceholderPattern.vue';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BadgeDollarSign, GraduationCap, LibraryBig, NotebookPen } from 'lucide-vue-next';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -48,10 +47,22 @@ type EChartsOption = ComposeOption<
 
 interface Props {
     cards: {
-        active_courses_count: number;
-        active_students_count: number;
-        monthly_lessons_count: number;
-        income: number;
+        active_courses: {
+            count: number;
+            diff: number;
+        };
+        active_students: {
+            count: number;
+            diff: number;
+        };
+        monthly_lessons: {
+            count: number;
+            diff: number;
+        };
+        income: {
+            month: number;
+            diff: number;
+        };
     };
     course_prices: {
         min: number;
@@ -86,6 +97,11 @@ const data = ref({
     tooltip: {
         trigger: 'axis',
     },
+    grid: {
+        left: '3%',
+        right: '3%',
+        top: '3%',
+    },
     legend: {
         data: props.lessons_month.series.map((item) => item[0]),
     },
@@ -111,6 +127,11 @@ const data = ref({
 const options = ref({
     tooltip: {
         trigger: 'axis',
+    },
+    grid: {
+        left: '3%',
+        right: '3%',
+        top: '3%',
     },
     legend: {
         data: props.students_courses.series.map((item) => item[0]),
@@ -158,10 +179,10 @@ const breadcrumbs: BreadcrumbItem[] = [
                     </CardHeader>
                     <CardContent>
                         <div class="text-2xl font-bold">
-                            {{ cards.active_courses_count }}
+                            {{ cards.active_courses.count }}
                         </div>
                         <p class="text-xs text-muted-foreground">
-                            +20.1% from last month
+                            {{ cards.active_courses.diff }} from last month
                         </p>
                     </CardContent>
                 </Card>
@@ -174,10 +195,10 @@ const breadcrumbs: BreadcrumbItem[] = [
                     </CardHeader>
                     <CardContent>
                         <div class="text-2xl font-bold">
-                            {{ cards.active_students_count }}
+                            {{ cards.active_students.count }}
                         </div>
                         <p class="text-xs text-muted-foreground">
-                            +20.1% from last month
+                            {{ cards.active_students.diff }} from last month
                         </p>
                     </CardContent>
                 </Card>
@@ -190,10 +211,10 @@ const breadcrumbs: BreadcrumbItem[] = [
                     </CardHeader>
                     <CardContent>
                         <div class="text-2xl font-bold">
-                            {{ cards.monthly_lessons_count }}
+                            {{ cards.monthly_lessons.count }}
                         </div>
                         <p class="text-xs text-muted-foreground">
-                            +20.1% from last month
+                            {{ cards.monthly_lessons.diff }} from last month
                         </p>
                     </CardContent>
                 </Card>
@@ -206,10 +227,10 @@ const breadcrumbs: BreadcrumbItem[] = [
                     </CardHeader>
                     <CardContent>
                         <div class="text-2xl font-bold">
-                            $ {{ cards.income }}
+                            $ {{ cards.income.month }}
                         </div>
                         <p class="text-xs text-muted-foreground">
-                            +20.1% from last month
+                            {{ cards.income.diff }} from last month
                         </p>
                     </CardContent>
                 </Card>
@@ -220,7 +241,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                     <CardHeader>
                         <CardTitle>Lessons Attendance per Month</CardTitle>
                     </CardHeader>
-                    <CardContent class="m-0 p-0">
+                    <CardContent>
                         <div class="h-[400px] w-full">
                             <VChart :option="data" :autoresize="true" />
                         </div>
@@ -230,7 +251,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                     <CardHeader>
                         <CardTitle>Students and Courses per Month</CardTitle>
                     </CardHeader>
-                    <CardContent class="m-0 p-0">
+                    <CardContent>
                         <div class="h-[400px] w-full">
                             <VChart :option="options" :autoresize="true" />
                         </div>
